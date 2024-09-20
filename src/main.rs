@@ -4,18 +4,22 @@
 // Feel free to delete this line.
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
 
-mod level;
-mod platforms;
-mod camera;
 mod bottle;
+mod camera;
+mod grabber;
+mod level;
+mod physics;
+mod platforms;
 
+use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
+use crate::grabber::GrabberPlugin;
+use crate::level::LevelPlugin;
+use crate::platforms::PlatformsPlugin;
+use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 use bevy::window::WindowResolution;
-use crate::bottle::BottlePlugin;
-use crate::level::LevelPlugin;
-use crate::platforms::PlatformsPlugin;
 
 fn main() {
     App::new()
@@ -38,7 +42,16 @@ fn main() {
                     ..default()
                 }),
         )
-        .add_plugins((CameraPlugin, LevelPlugin, PlatformsPlugin, BottlePlugin))
-        .insert_resource(ClearColor(Color::srgb(50./255., 25./255., 51./255.)))
+        .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
+        .insert_resource(Gravity(Vec2::NEG_Y * 2400.0))
+        .add_plugins(PhysicsDebugPlugin::default())
+        .add_plugins((
+            CameraPlugin,
+            LevelPlugin,
+            PlatformsPlugin,
+            BottlePlugin,
+            GrabberPlugin,
+        ))
+        .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
         .run();
 }

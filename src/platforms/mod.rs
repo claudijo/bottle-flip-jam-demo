@@ -1,5 +1,5 @@
-use bevy::prelude::*;
 use crate::platforms::systems::{spawn_bench, spawn_floor};
+use bevy::prelude::*;
 
 mod systems;
 

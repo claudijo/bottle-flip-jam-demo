@@ -1,7 +1,9 @@
-use bevy::prelude::*;
 use crate::bottle::systems::spawn_bottle;
+use bevy::prelude::*;
 
 mod systems;
+
+mod components;
 
 pub struct BottlePlugin;
 
