@@ -4,26 +4,41 @@
 // Feel free to delete this line.
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
 
+mod level;
+mod platforms;
+mod camera;
+mod bottle;
+
+use crate::camera::CameraPlugin;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
+use bevy::window::WindowResolution;
+use crate::bottle::BottlePlugin;
+use crate::level::LevelPlugin;
+use crate::platforms::PlatformsPlugin;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.set(AssetPlugin {
-            // Wasm builds will check for meta files (that don't exist) if this isn't set.
-            // This causes errors and even panics in web builds on itch.
-            // See https://github.com/bevyengine/bevy_github_ci_template/issues/48.
-            meta_check: AssetMetaCheck::Never,
-            ..default()
-        }))
-        .add_systems(Startup, setup)
+        .add_plugins(
+            DefaultPlugins
+                .set(AssetPlugin {
+                    // Wasm builds will check for meta files (that don't exist) if this isn't set.
+                    // This causes errors and even panics in web builds on itch.
+                    // See https://github.com/bevyengine/bevy_github_ci_template/issues/48.
+                    meta_check: AssetMetaCheck::Never,
+                    ..default()
+                })
+                .set(ImagePlugin::default_nearest())
+                .set(WindowPlugin {
+                    primary_window: Some(Window {
+                        title: "Bottle Flip Jam [Demo]".into(),
+                        resolution: WindowResolution::new(640., 360.),
+                        ..default()
+                    }),
+                    ..default()
+                }),
+        )
+        .add_plugins((CameraPlugin, LevelPlugin, PlatformsPlugin, BottlePlugin))
+        .insert_resource(ClearColor(Color::srgb(50./255., 25./255., 51./255.)))
         .run();
-}
-
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(Camera2dBundle::default());
-    commands.spawn(SpriteBundle {
-        texture: asset_server.load("ducky.png"),
-        ..Default::default()
-    });
 }
