@@ -26,9 +26,24 @@ pub fn spawn_floor(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 pub fn spawn_bench(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(SpriteBundle {
-        texture: asset_server.load("bench.png"),
-        transform: Transform::from_xyz(-85., -435., 2.).with_scale(Vec3::ONE * 5.),
-        ..default()
-    });
+    commands
+        .spawn((
+            VisibilityBundle::default(),
+            TransformBundle::from_transform(
+                Transform::from_xyz(-85., -460., 2.)
+            ),
+            RigidBody::Static,
+            Collider::rectangle(145., 50.),
+            CollisionLayers::new(
+                CustomCollisionLayer::Platform,
+                [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
+            ),
+        ))
+        .with_children(|parent| {
+            parent.spawn(SpriteBundle {
+                transform: Transform::from_xyz(2.5, 25., 0.).with_scale(Vec3::ONE * 5.),
+                texture: asset_server.load("bench.png"),
+                ..default()
+            });
+        });
 }
