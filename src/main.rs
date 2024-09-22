@@ -6,7 +6,7 @@
 
 mod bottle;
 mod camera;
-mod grabber;
+pub mod grabber;
 mod level;
 mod physics;
 mod platforms;

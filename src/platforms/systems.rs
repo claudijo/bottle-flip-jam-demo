@@ -29,9 +29,7 @@ pub fn spawn_bench(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn((
             VisibilityBundle::default(),
-            TransformBundle::from_transform(
-                Transform::from_xyz(-85., -460., 2.)
-            ),
+            TransformBundle::from_transform(Transform::from_xyz(-85., -460., 2.)),
             RigidBody::Static,
             Collider::rectangle(145., 50.),
             CollisionLayers::new(

@@ -1,7 +1,9 @@
+use crate::camera::resources::FollowTarget;
 use crate::grabber::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
 use avian2d::collision::Collider;
 use avian2d::prelude::*;
 use bevy::prelude::*;
+use bevy::window::PrimaryWindow;
 
 fn world_from_viewport(
     camera: &Camera,
@@ -54,11 +56,12 @@ pub fn spawn_grab_anchor(mut commands: Commands) {
 pub fn grab_using_mouse(
     mut commands: Commands,
     camera_query: Query<(&Camera, &GlobalTransform)>,
-    windows: Query<&Window>,
+    windows: Query<&Window, With<PrimaryWindow>>,
     anchor_query: Query<Entity, With<GrabAnchor>>,
     bottle_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
     grabbable_query: Query<(&GlobalTransform, &Collider), With<GrabZone>>,
     buttons: Res<ButtonInput<MouseButton>>,
+    mut follow_target: ResMut<FollowTarget>,
 ) {
     if buttons.just_pressed(MouseButton::Left) {
         let (camera, camera_transform) = camera_query.single();
@@ -81,6 +84,7 @@ pub fn grab_using_mouse(
                         grabbable_transform,
                         collider,
                     ) {
+                        follow_target.0 = false;
                         return;
                     }
                 }
@@ -111,10 +115,12 @@ pub fn release_using_mouse(
     mut commands: Commands,
     joint_query: Query<Entity, With<GrabJoint>>,
     buttons: Res<ButtonInput<MouseButton>>,
+    mut follow_target: ResMut<FollowTarget>,
 ) {
     if buttons.just_released(MouseButton::Left) {
         for joint in &joint_query {
             commands.entity(joint).despawn();
+            follow_target.0 = true;
         }
     }
 }

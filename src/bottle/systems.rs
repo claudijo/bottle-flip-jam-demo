@@ -1,4 +1,5 @@
 use crate::bottle::components::{Bottle, BottleContent, BottleContentJoint};
+use crate::camera::components::FocusTarget;
 use crate::grabber::components::{GrabTarget, GrabZone};
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
@@ -28,6 +29,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             ),
             Bottle,
             GrabTarget,
+            FocusTarget,
             GrabZone,
             AngularDamping(0.5),
         ))
