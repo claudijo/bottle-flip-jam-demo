@@ -1,20 +1,21 @@
 use crate::bottle::components::{Bottle, BottleContent, BottleContentJoint};
 use crate::camera::components::FocusTarget;
+use crate::config::ASSETS_SCALE_FACTOR;
 use crate::grabber::components::{GrabTarget, GrabZone};
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
-const BOTTLE_BODY_SIZE: Vec2 = Vec2::new(40., 65.);
-const BOTTLE_NECK_HEIGHT: f32 = 16.;
-const BOTTLE_CAP_SIZE: Vec2 = Vec2::new(14., 10.);
-const BOTTLE_DENSITY: f32 = 0.4;
-const CONTENT_RADIUS: f32 = 10.;
-const CONTENT_DENSITY: f32 = 4.;
+const BOTTLE_BODY_SIZE: Vec2 = Vec2::new(8. * ASSETS_SCALE_FACTOR, 15. * ASSETS_SCALE_FACTOR);
+const BOTTLE_NECK_HEIGHT: f32 = 3. * ASSETS_SCALE_FACTOR;
+const BOTTLE_CAP_SIZE: Vec2 = Vec2::new(4. * ASSETS_SCALE_FACTOR, 2. * ASSETS_SCALE_FACTOR);
+const BOTTLE_DENSITY: f32 = 0.1;
+const CONTENT_RADIUS: f32 = 3. * ASSETS_SCALE_FACTOR;
+const CONTENT_DENSITY: f32 = 1.;
 
 pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let bottle_translation = Vec3::new(-400., -400., 10.);
+    let bottle_translation = Vec3::new(-80. * ASSETS_SCALE_FACTOR, -16. * ASSETS_SCALE_FACTOR, 10.);
 
     let bottle = commands
         .spawn((
@@ -37,7 +38,8 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             // Bottle body
             child_builder.spawn(SpriteBundle {
                 texture: asset_server.load("bottle.png"),
-                transform: Transform::from_xyz(0., 10., 0.).with_scale(Vec3::ONE * 4.),
+                transform: Transform::from_xyz(0., 10., 0.)
+                    .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
                 ..default()
             });
 
@@ -64,7 +66,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             child_builder.spawn((
                 TransformBundle::from_transform(Transform::from_xyz(
                     0.,
-                    BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT - BOTTLE_CAP_SIZE.y / 2.,
+                    BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT,
                     0.,
                 )),
                 GrabZone,

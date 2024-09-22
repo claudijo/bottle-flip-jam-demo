@@ -6,6 +6,7 @@
 
 mod bottle;
 mod camera;
+pub mod config;
 pub mod grabber;
 mod level;
 mod physics;
@@ -36,6 +37,7 @@ fn main() {
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Bottle Flip Jam [Demo]".into(),
+                        // resolution: WindowResolution::new(640. * 3., 360. * 3.),
                         resolution: WindowResolution::new(640., 360.),
                         ..default()
                     }),

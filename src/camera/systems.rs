@@ -1,11 +1,13 @@
 use crate::camera::components::FocusTarget;
 use crate::camera::resources::FollowTarget;
+use crate::config::ASSETS_SCALE_FACTOR;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
 pub fn spawn_camera(mut commands: Commands) {
     commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(-280., -340., 0.),
+        transform: Transform::from_xyz(-60. * ASSETS_SCALE_FACTOR, -8. * ASSETS_SCALE_FACTOR, 0.),
+
         projection: OrthographicProjection {
             far: 1000.,
             near: -1000.,
