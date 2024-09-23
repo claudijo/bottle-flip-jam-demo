@@ -1,4 +1,4 @@
-use crate::grabber::resources::{Grabbing, GrabTouchId};
+use crate::grabber::resources::{GrabTouchId, Grabbing};
 use crate::grabber::systems::{
     drag_using_mouse, drag_using_touch, grab_using_mouse, grab_using_touch, release_using_mouse,
     release_using_touch, spawn_grab_anchor,

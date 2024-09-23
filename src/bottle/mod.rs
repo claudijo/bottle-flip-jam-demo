@@ -1,4 +1,4 @@
-use crate::bottle::systems::{spawn_bottle};
+use crate::bottle::systems::spawn_bottle;
 use bevy::prelude::*;
 
 mod systems;
