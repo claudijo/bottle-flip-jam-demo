@@ -32,12 +32,16 @@ pub fn aim_camera(
     }
 
     for target_transform in &target_query {
-        let target_translation = target_transform.translation();
+        let target_translation =
+            target_transform.translation() + Vec3::Y * ASSETS_SCALE_FACTOR * 20.;
         for mut camera_transform in &mut camera_query {
-            camera_transform.translation = camera_transform.translation.lerp(
-                target_translation + Vec3::Y * 115.,
-                5. * time.delta_seconds(),
-            );
+            camera_transform.translation = camera_transform
+                .translation
+                .lerp(target_translation, 5. * time.delta_seconds());
+
+            if camera_transform.translation.y > target_translation.y {
+                camera_transform.translation.y = target_translation.y;
+            }
         }
     }
 }
