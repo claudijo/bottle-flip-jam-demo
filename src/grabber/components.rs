@@ -1,7 +1,9 @@
 use bevy::prelude::*;
 
 #[derive(Component)]
-pub struct GrabZone;
+pub struct GrabZone {
+    pub radius: f32,
+}
 
 #[derive(Component)]
 pub struct GrabTarget;

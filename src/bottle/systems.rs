@@ -31,13 +31,22 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             Bottle,
             GrabTarget,
             FocusTarget,
-            GrabZone,
-            AngularDamping(2.),
+            AngularDamping(1.),
             LinearDamping(0.5),
         ))
-        .with_children(|child_builder| {
+        .with_children(|parent| {
+            // Grab zone
+            parent.spawn((
+                TransformBundle::from_transform(Transform::from_xyz(
+                    0.,
+                    BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT,
+                    0.,
+                )),
+                GrabZone { radius: 16. },
+            ));
+
             // Bottle body
-            child_builder.spawn(SpriteBundle {
+            parent.spawn(SpriteBundle {
                 texture: asset_server.load("bottle.png"),
                 transform: Transform::from_xyz(0., 2. * ASSETS_SCALE_FACTOR, 0.)
                     .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
@@ -45,13 +54,12 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             });
 
             // Bottleneck
-            child_builder.spawn((
+            parent.spawn((
                 TransformBundle::from_transform(Transform::from_xyz(
                     0.,
                     BOTTLE_BODY_SIZE.y / 2.,
                     0.,
                 )),
-                GrabZone,
                 ColliderDensity(BOTTLE_DENSITY),
                 Collider::triangle(
                     Vec2::Y * BOTTLE_NECK_HEIGHT,
@@ -64,13 +72,12 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
                 ),
             ));
             // Bottle cap
-            child_builder.spawn((
+            parent.spawn((
                 TransformBundle::from_transform(Transform::from_xyz(
                     0.,
                     BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT,
                     0.,
                 )),
-                GrabZone,
                 ColliderDensity(BOTTLE_DENSITY),
                 Collider::rectangle(BOTTLE_CAP_SIZE.x, BOTTLE_CAP_SIZE.y),
                 CollisionLayers::new(

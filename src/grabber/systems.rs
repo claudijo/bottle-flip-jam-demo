@@ -1,6 +1,5 @@
 use crate::grabber::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
 use crate::grabber::resources::{GrabTouchId, Grabbing};
-use avian2d::collision::Collider;
 use avian2d::prelude::*;
 use bevy::input::touch::TouchPhase;
 use bevy::prelude::*;
@@ -24,14 +23,14 @@ fn try_grab_target(
     grab_target_transform: &GlobalTransform,
     cursor_position: Vec2,
     grab_zone_transform: &GlobalTransform,
-    grab_zone: &Collider,
+    grab_zone: &GrabZone,
 ) -> bool {
-    let (_scale, rotation, translation) = grab_zone_transform.to_scale_rotation_translation();
-    if grab_zone.contains_point(translation.xy(), rotation, cursor_position) {
+    let offset = cursor_position - grab_zone_transform.translation().xy();
+    if offset.length() < grab_zone.radius {
         let grabbed_at = grab_target_transform
             .affine()
             .inverse()
-            .transform_point(cursor_position.extend(0.));
+            .transform_point(grab_zone_transform.translation());
 
         commands.spawn((
             RevoluteJoint::new(anchor, grab_target)
@@ -60,7 +59,7 @@ pub fn grab_using_mouse(
     windows: Query<&Window, With<PrimaryWindow>>,
     anchor_query: Query<Entity, With<GrabAnchor>>,
     target_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
-    grab_zone_query: Query<(&GlobalTransform, &Collider), With<GrabZone>>,
+    grab_zone_query: Query<(&GlobalTransform, &GrabZone)>,
     buttons: Res<ButtonInput<MouseButton>>,
     mut grabbing: ResMut<Grabbing>,
 ) {
@@ -75,7 +74,7 @@ pub fn grab_using_mouse(
 
         for anchor in &anchor_query {
             for (bottle, bottle_transform) in &target_query {
-                for (grab_zone_transform, collider) in &grab_zone_query {
+                for (grab_zone_transform, grab_zone) in &grab_zone_query {
                     if try_grab_target(
                         &mut commands,
                         anchor,
@@ -83,7 +82,7 @@ pub fn grab_using_mouse(
                         bottle_transform,
                         cursor_position,
                         grab_zone_transform,
-                        collider,
+                        grab_zone,
                     ) {
                         grabbing.0 = true;
                         return;
@@ -99,7 +98,7 @@ pub fn grab_using_touch(
     camera_query: Query<(&Camera, &GlobalTransform)>,
     anchor_query: Query<Entity, With<GrabAnchor>>,
     target_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
-    grab_zone_query: Query<(&GlobalTransform, &Collider), With<GrabZone>>,
+    grab_zone_query: Query<(&GlobalTransform, &GrabZone)>,
     touches: Res<Touches>,
     mut grab_touch_id: ResMut<GrabTouchId>,
     mut grabbing: ResMut<Grabbing>,
@@ -119,7 +118,7 @@ pub fn grab_using_touch(
 
             for anchor in &anchor_query {
                 for (bottle, bottle_transform) in &target_query {
-                    for (grab_zone_transform, collider) in &grab_zone_query {
+                    for (grab_zone_transform, grab_zone) in &grab_zone_query {
                         if try_grab_target(
                             &mut commands,
                             anchor,
@@ -127,7 +126,7 @@ pub fn grab_using_touch(
                             bottle_transform,
                             cursor_position,
                             grab_zone_transform,
-                            collider,
+                            grab_zone,
                         ) {
                             grabbing.0 = true;
                             grab_touch_id.0 = Some(touch.id());
@@ -144,6 +143,7 @@ pub fn drag_using_mouse(
     camera_query: Query<(&Camera, &GlobalTransform)>,
     windows: Query<&Window>,
     mut anchor_query: Query<&mut Transform, With<GrabAnchor>>,
+    time: Res<Time>,
 ) {
     let (camera, camera_transform) = camera_query.single();
     let window = windows.single();
@@ -154,7 +154,9 @@ pub fn drag_using_mouse(
     };
 
     for mut anchor_transform in &mut anchor_query {
-        anchor_transform.translation = cursor_point.extend(0.);
+        anchor_transform.translation = anchor_transform
+            .translation
+            .lerp(cursor_point.extend(0.), 10. * time.delta_seconds());
     }
 }
 
@@ -163,6 +165,7 @@ pub fn drag_using_touch(
     mut anchor_query: Query<&mut Transform, With<GrabAnchor>>,
     grab_touch_id: Res<GrabTouchId>,
     mut touch_event_reader: EventReader<TouchInput>,
+    time: Res<Time>,
 ) {
     if grab_touch_id.0.is_none() {
         return;
@@ -182,7 +185,10 @@ pub fn drag_using_touch(
             };
 
             for mut anchor_transform in &mut anchor_query {
-                anchor_transform.translation = cursor_point.extend(0.);
+                anchor_transform.translation = anchor_transform.translation.lerp(
+                    cursor_point.extend(0.) - Vec3::Y * 20.,
+                    10. * time.delta_seconds(),
+                );
             }
 
             return;
