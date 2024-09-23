@@ -38,7 +38,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             // Bottle body
             child_builder.spawn(SpriteBundle {
                 texture: asset_server.load("bottle.png"),
-                transform: Transform::from_xyz(0., 10., 0.)
+                transform: Transform::from_xyz(0., 2. * ASSETS_SCALE_FACTOR, 0.)
                     .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
                 ..default()
             });
