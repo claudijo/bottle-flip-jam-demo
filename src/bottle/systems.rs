@@ -32,7 +32,8 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             GrabTarget,
             FocusTarget,
             GrabZone,
-            AngularDamping(0.5),
+            AngularDamping(2.),
+            LinearDamping(0.5),
         ))
         .with_children(|child_builder| {
             // Bottle body
