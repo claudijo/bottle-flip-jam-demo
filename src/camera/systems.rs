@@ -1,6 +1,6 @@
 use crate::camera::components::FocusTarget;
-use crate::camera::resources::FollowTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
+use crate::grabber::resources::Grabbing;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
@@ -24,10 +24,10 @@ pub fn spawn_camera(mut commands: Commands) {
 pub fn aim_camera(
     target_query: Query<&GlobalTransform, With<FocusTarget>>,
     mut camera_query: Query<&mut Transform, With<Camera>>,
-    follow_target: Res<FollowTarget>,
+    grabbing: Res<Grabbing>,
     time: Res<Time>,
 ) {
-    if !follow_target.0 {
+    if grabbing.0 {
         return;
     }
 

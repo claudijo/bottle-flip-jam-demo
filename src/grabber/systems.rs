@@ -1,7 +1,8 @@
-use crate::camera::resources::FollowTarget;
 use crate::grabber::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
+use crate::grabber::resources::{Grabbing, GrabTouchId};
 use avian2d::collision::Collider;
 use avian2d::prelude::*;
+use bevy::input::touch::TouchPhase;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
@@ -58,10 +59,10 @@ pub fn grab_using_mouse(
     camera_query: Query<(&Camera, &GlobalTransform)>,
     windows: Query<&Window, With<PrimaryWindow>>,
     anchor_query: Query<Entity, With<GrabAnchor>>,
-    bottle_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
-    grabbable_query: Query<(&GlobalTransform, &Collider), With<GrabZone>>,
+    target_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
+    grab_zone_query: Query<(&GlobalTransform, &Collider), With<GrabZone>>,
     buttons: Res<ButtonInput<MouseButton>>,
-    mut follow_target: ResMut<FollowTarget>,
+    mut grabbing: ResMut<Grabbing>,
 ) {
     if buttons.just_pressed(MouseButton::Left) {
         let (camera, camera_transform) = camera_query.single();
@@ -73,19 +74,65 @@ pub fn grab_using_mouse(
         };
 
         for anchor in &anchor_query {
-            for (bottle, bottle_transform) in &bottle_query {
-                for (grabbable_transform, collider) in &grabbable_query {
+            for (bottle, bottle_transform) in &target_query {
+                for (grab_zone_transform, collider) in &grab_zone_query {
                     if try_grab_target(
                         &mut commands,
                         anchor,
                         bottle,
                         bottle_transform,
                         cursor_position,
-                        grabbable_transform,
+                        grab_zone_transform,
                         collider,
                     ) {
-                        follow_target.0 = false;
+                        grabbing.0 = true;
                         return;
+                    }
+                }
+            }
+        }
+    }
+}
+
+pub fn grab_using_touch(
+    mut commands: Commands,
+    camera_query: Query<(&Camera, &GlobalTransform)>,
+    anchor_query: Query<Entity, With<GrabAnchor>>,
+    target_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
+    grab_zone_query: Query<(&GlobalTransform, &Collider), With<GrabZone>>,
+    touches: Res<Touches>,
+    mut grab_touch_id: ResMut<GrabTouchId>,
+    mut grabbing: ResMut<Grabbing>,
+) {
+    if grab_touch_id.0.is_some() {
+        return;
+    }
+
+    for touch in touches.iter() {
+        if touches.just_pressed(touch.id()) {
+            let (camera, camera_transform) = camera_query.single();
+            let Some(cursor_position) =
+                world_from_viewport(camera, camera_transform, Some(touch.position()))
+            else {
+                return;
+            };
+
+            for anchor in &anchor_query {
+                for (bottle, bottle_transform) in &target_query {
+                    for (grab_zone_transform, collider) in &grab_zone_query {
+                        if try_grab_target(
+                            &mut commands,
+                            anchor,
+                            bottle,
+                            bottle_transform,
+                            cursor_position,
+                            grab_zone_transform,
+                            collider,
+                        ) {
+                            grabbing.0 = true;
+                            grab_touch_id.0 = Some(touch.id());
+                            return;
+                        }
                     }
                 }
             }
@@ -111,16 +158,76 @@ pub fn drag_using_mouse(
     }
 }
 
+pub fn drag_using_touch(
+    camera_query: Query<(&Camera, &GlobalTransform)>,
+    mut anchor_query: Query<&mut Transform, With<GrabAnchor>>,
+    grab_touch_id: Res<GrabTouchId>,
+    mut touch_event_reader: EventReader<TouchInput>,
+) {
+    if grab_touch_id.0.is_none() {
+        return;
+    }
+
+    for touch_event in touch_event_reader.read() {
+        if TouchPhase::Moved == touch_event.phase {
+            if grab_touch_id.0 != Some(touch_event.id) {
+                continue;
+            }
+
+            let (camera, camera_transform) = camera_query.single();
+            let Some(cursor_point) =
+                world_from_viewport(camera, camera_transform, Some(touch_event.position))
+            else {
+                return;
+            };
+
+            for mut anchor_transform in &mut anchor_query {
+                anchor_transform.translation = cursor_point.extend(0.);
+            }
+
+            return;
+        }
+    }
+}
+
 pub fn release_using_mouse(
     mut commands: Commands,
     joint_query: Query<Entity, With<GrabJoint>>,
     buttons: Res<ButtonInput<MouseButton>>,
-    mut follow_target: ResMut<FollowTarget>,
+    mut grabbing: ResMut<Grabbing>,
 ) {
     if buttons.just_released(MouseButton::Left) {
         for joint in &joint_query {
             commands.entity(joint).despawn();
-            follow_target.0 = true;
+            grabbing.0 = false;
+        }
+    }
+}
+
+pub fn release_using_touch(
+    mut commands: Commands,
+    joint_query: Query<Entity, With<GrabJoint>>,
+    mut grab_touch_id: ResMut<GrabTouchId>,
+    mut touch_event_reader: EventReader<TouchInput>,
+    mut grabbing: ResMut<Grabbing>,
+) {
+    if grab_touch_id.0.is_none() {
+        return;
+    }
+
+    for touch_event in touch_event_reader.read() {
+        if touch_event.phase == TouchPhase::Ended || touch_event.phase == TouchPhase::Canceled {
+            if grab_touch_id.0 != Some(touch_event.id) {
+                continue;
+            }
+
+            for joint in &joint_query {
+                commands.entity(joint).despawn();
+            }
+
+            grabbing.0 = false;
+            grab_touch_id.0 = None;
+            return;
         }
     }
 }

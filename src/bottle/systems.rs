@@ -5,7 +5,9 @@ use crate::grabber::components::{GrabTarget, GrabZone};
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
+use bevy::color::palettes::basic::RED;
 use bevy::prelude::*;
+use bevy::sprite::{MaterialMesh2dBundle, Mesh2dHandle};
 
 const BOTTLE_BODY_SIZE: Vec2 = Vec2::new(8. * ASSETS_SCALE_FACTOR, 15. * ASSETS_SCALE_FACTOR);
 const BOTTLE_NECK_HEIGHT: f32 = 3. * ASSETS_SCALE_FACTOR;
