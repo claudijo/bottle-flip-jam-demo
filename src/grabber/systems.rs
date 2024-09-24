@@ -143,7 +143,6 @@ pub fn drag_using_mouse(
     camera_query: Query<(&Camera, &GlobalTransform)>,
     windows: Query<&Window>,
     mut anchor_query: Query<&mut Transform, With<GrabAnchor>>,
-    time: Res<Time>,
 ) {
     let (camera, camera_transform) = camera_query.single();
     let window = windows.single();
@@ -154,9 +153,7 @@ pub fn drag_using_mouse(
     };
 
     for mut anchor_transform in &mut anchor_query {
-        anchor_transform.translation = anchor_transform
-            .translation
-            .lerp(cursor_point.extend(0.), 10. * time.delta_seconds());
+        anchor_transform.translation = cursor_point.extend(0.);
     }
 }
 
@@ -165,7 +162,6 @@ pub fn drag_using_touch(
     mut anchor_query: Query<&mut Transform, With<GrabAnchor>>,
     grab_touch_id: Res<GrabTouchId>,
     mut touch_event_reader: EventReader<TouchInput>,
-    time: Res<Time>,
 ) {
     if grab_touch_id.0.is_none() {
         return;
@@ -185,10 +181,7 @@ pub fn drag_using_touch(
             };
 
             for mut anchor_transform in &mut anchor_query {
-                anchor_transform.translation = anchor_transform.translation.lerp(
-                    cursor_point.extend(0.) - Vec3::Y * 20.,
-                    10. * time.delta_seconds(),
-                );
+                anchor_transform.translation = cursor_point.extend(0.) - Vec3::Y * 20.;
             }
 
             return;
