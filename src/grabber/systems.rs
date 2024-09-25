@@ -181,7 +181,7 @@ pub fn drag_using_touch(
             };
 
             for mut anchor_transform in &mut anchor_query {
-                anchor_transform.translation = cursor_point.extend(0.) - Vec3::Y * 20.;
+                anchor_transform.translation = cursor_point.extend(0.) - Vec3::Y * 16.;
             }
 
             return;
