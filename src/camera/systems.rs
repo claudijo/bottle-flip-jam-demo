@@ -4,6 +4,12 @@ use crate::grabber::resources::Grabbing;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
+const CLOSEUP_CAMERA_SCALE: f32 = 0.5;
+const NORMAL_CAMERA_SCALE: f32 = 1.;
+
+const ZOOM_IN_SPEED: f32 = 4.;
+const ZOOM_OUT_SPEED: f32 = 2.;
+
 pub fn spawn_camera(mut commands: Commands) {
     commands.spawn(Camera2dBundle {
         transform: Transform::from_xyz(-60. * ASSETS_SCALE_FACTOR, -8. * ASSETS_SCALE_FACTOR, 0.),
@@ -15,6 +21,7 @@ pub fn spawn_camera(mut commands: Commands) {
                 min_width: 640.,
                 min_height: 340.,
             },
+            scale: NORMAL_CAMERA_SCALE,
             ..default()
         },
         ..default()
@@ -42,6 +49,26 @@ pub fn aim_camera(
             if camera_transform.translation.y > target_translation.y {
                 camera_transform.translation.y = target_translation.y;
             }
+        }
+    }
+}
+
+pub fn zoom_camera(
+    mut camera_query: Query<&mut OrthographicProjection, With<Camera>>,
+    grabbing: Res<Grabbing>,
+    time: Res<Time>,
+) {
+    for mut projection in &mut camera_query {
+        let (target_scale, zoom_speed) = if grabbing.0 {
+            (CLOSEUP_CAMERA_SCALE, ZOOM_IN_SPEED)
+        } else {
+            (NORMAL_CAMERA_SCALE, ZOOM_OUT_SPEED)
+        };
+
+        if (projection.scale - target_scale).abs() > 0.0001 {
+            projection.scale = projection
+                .scale
+                .lerp(target_scale, zoom_speed * time.delta_seconds())
         }
     }
 }
