@@ -12,7 +12,7 @@ const ZOOM_OUT_SPEED: f32 = 2.;
 
 pub fn spawn_camera(mut commands: Commands) {
     commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(-60. * ASSETS_SCALE_FACTOR, -8. * ASSETS_SCALE_FACTOR, 0.),
+        transform: Transform::from_xyz(20. * ASSETS_SCALE_FACTOR, 20. * ASSETS_SCALE_FACTOR, 0.),
 
         projection: OrthographicProjection {
             far: 1000.,

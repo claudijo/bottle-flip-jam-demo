@@ -5,37 +5,17 @@ use crate::grabber::resources::Grabbing;
 use avian2d::prelude::{Collider, Collision, RigidBody, Sensor};
 use bevy::prelude::*;
 
-pub fn spawn_money_trail_1(
+pub fn spawn_money_trail(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+    trail_configs: Vec<(Vec3, usize)>,
 ) {
     let texture_handle = asset_server.load("money_sprite.png");
     let texture_atlas = TextureAtlasLayout::from_grid(UVec2::splat(24), 6, 1, None, None);
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
 
-    for (translation, atlas_index) in [
-        (
-            Vec3::new(-80. * ASSETS_SCALE_FACTOR, 5. * ASSETS_SCALE_FACTOR, 3.),
-            1,
-        ),
-        (
-            Vec3::new(-75. * ASSETS_SCALE_FACTOR, 22.5 * ASSETS_SCALE_FACTOR, 3.),
-            0,
-        ),
-        (
-            Vec3::new(-60. * ASSETS_SCALE_FACTOR, 35. * ASSETS_SCALE_FACTOR, 3.),
-            5,
-        ),
-        (
-            Vec3::new(-45. * ASSETS_SCALE_FACTOR, 17.5 * ASSETS_SCALE_FACTOR, 3.),
-            3,
-        ),
-        (
-            Vec3::new(-40. * ASSETS_SCALE_FACTOR, -5. * ASSETS_SCALE_FACTOR, 3.),
-            2,
-        ),
-    ] {
+    for (translation, atlas_index) in trail_configs {
         commands
             .spawn((
                 VisibilityBundle::default(),
@@ -59,6 +39,99 @@ pub fn spawn_money_trail_1(
                 ));
             });
     }
+}
+
+pub fn spawn_money_trail_1(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (
+            Vec3::new(-80. * ASSETS_SCALE_FACTOR, 5. * ASSETS_SCALE_FACTOR, 3.),
+            1,
+        ),
+        (
+            Vec3::new(-75. * ASSETS_SCALE_FACTOR, 22.5 * ASSETS_SCALE_FACTOR, 3.),
+            0,
+        ),
+        (
+            Vec3::new(-60. * ASSETS_SCALE_FACTOR, 35. * ASSETS_SCALE_FACTOR, 3.),
+            5,
+        ),
+        (
+            Vec3::new(-45. * ASSETS_SCALE_FACTOR, 17.5 * ASSETS_SCALE_FACTOR, 3.),
+            3,
+        ),
+        (
+            Vec3::new(-37.5 * ASSETS_SCALE_FACTOR, -5. * ASSETS_SCALE_FACTOR, 3.),
+            2,
+        ),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_2(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (
+            Vec3::new(-15. * ASSETS_SCALE_FACTOR, 10. * ASSETS_SCALE_FACTOR, 3.),
+            1,
+        ),
+        (
+            Vec3::new(0. * ASSETS_SCALE_FACTOR, 30. * ASSETS_SCALE_FACTOR, 3.),
+            0,
+        ),
+        (
+            Vec3::new(20. * ASSETS_SCALE_FACTOR, 42.5 * ASSETS_SCALE_FACTOR, 3.),
+            5,
+        ),
+        (
+            Vec3::new(40. * ASSETS_SCALE_FACTOR, 35. * ASSETS_SCALE_FACTOR, 3.),
+            3,
+        ),
+        (
+            Vec3::new(50. * ASSETS_SCALE_FACTOR, 20. * ASSETS_SCALE_FACTOR, 3.),
+            2,
+        ),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_3(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (
+            Vec3::new(65. * ASSETS_SCALE_FACTOR, 42.5 * ASSETS_SCALE_FACTOR, 3.),
+            1,
+        ),
+        (
+            Vec3::new(75. * ASSETS_SCALE_FACTOR, 62.5 * ASSETS_SCALE_FACTOR, 3.),
+            0,
+        ),
+        (
+            Vec3::new(90. * ASSETS_SCALE_FACTOR, 75. * ASSETS_SCALE_FACTOR, 3.),
+            5,
+        ),
+        (
+            Vec3::new(105. * ASSETS_SCALE_FACTOR, 65. * ASSETS_SCALE_FACTOR, 3.),
+            3,
+        ),
+        (
+            Vec3::new(112.5 * ASSETS_SCALE_FACTOR, 50. * ASSETS_SCALE_FACTOR, 3.),
+            2,
+        ),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
 }
 
 pub fn collect_money(
