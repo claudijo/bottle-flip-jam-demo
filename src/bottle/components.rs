@@ -4,6 +4,9 @@ use bevy::prelude::Component;
 pub struct Bottle;
 
 #[derive(Component)]
+pub struct BottlePart;
+
+#[derive(Component)]
 pub struct BottleContent;
 
 #[derive(Component)]

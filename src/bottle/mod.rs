@@ -3,7 +3,7 @@ use bevy::prelude::*;
 
 mod systems;
 
-mod components;
+pub mod components;
 
 pub struct BottlePlugin;
 

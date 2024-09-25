@@ -90,7 +90,7 @@ pub fn spawn_fan(
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
 ) {
-    let texture_handle = asset_server.load("fan_animation.png");
+    let texture_handle = asset_server.load("fan_sprite.png");
     let texture_atlas = TextureAtlasLayout::from_grid(UVec2::splat(32), 4, 1, None, None);
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
 

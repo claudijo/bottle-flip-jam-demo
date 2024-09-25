@@ -6,6 +6,7 @@
 
 mod bottle;
 mod camera;
+mod collectables;
 pub mod config;
 pub mod grabber;
 mod level;
@@ -14,6 +15,7 @@ mod platforms;
 
 use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
+use crate::collectables::CollectablesPlugin;
 use crate::grabber::GrabberPlugin;
 use crate::level::LevelPlugin;
 use crate::platforms::PlatformsPlugin;
@@ -53,6 +55,7 @@ fn main() {
             PlatformsPlugin,
             BottlePlugin,
             GrabberPlugin,
+            CollectablesPlugin,
         ))
         .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
         .run();
