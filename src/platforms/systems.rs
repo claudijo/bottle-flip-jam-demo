@@ -1,10 +1,10 @@
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::physics::CustomCollisionLayer;
 use crate::platforms::components::FanAnimationTimer;
+use crate::progression::components::WaypointPlatform;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 use std::time::Duration;
-use crate::progression::components::WaypointPlatform;
 
 pub fn spawn_ground(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands

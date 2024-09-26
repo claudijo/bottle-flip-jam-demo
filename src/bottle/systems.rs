@@ -135,13 +135,17 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
     // https://github.com/Jondolf/avian/blob/main/crates/avian2d/examples/dynamic_character_2d/plugin.rs
     commands.entity(bottle).insert(
         ShapeCaster::new(
-            Collider::rectangle(BOTTLE_BODY_SIZE.x, BOTTLE_BODY_SIZE.y),
-            Vec2::ZERO,
+            Collider::rectangle(
+                BOTTLE_BODY_SIZE.x,
+                BOTTLE_BODY_SIZE.y + BOTTLE_NECK_HEIGHT + BOTTLE_CAP_SIZE.y / 2.,
+            ),
+            Vec2::Y * (BOTTLE_NECK_HEIGHT + BOTTLE_CAP_SIZE.y / 2.) / 2.,
             0.,
-            Dir2::Y,
+            Dir2::NEG_Y,
         )
         .with_query_filter(SpatialQueryFilter::from_excluded_entities(
             shape_caster_exclude_entities,
-        )),
+        ))
+        .with_max_time_of_impact(2.),
     );
 }

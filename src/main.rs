@@ -20,11 +20,11 @@ use crate::collectables::CollectablesPlugin;
 use crate::grabber::GrabberPlugin;
 use crate::level::LevelPlugin;
 use crate::platforms::PlatformsPlugin;
+use crate::progression::ProgressionPlugin;
 use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 use bevy::window::WindowResolution;
-use crate::progression::ProgressionPlugin;
 
 fn main() {
     App::new()
@@ -41,7 +41,6 @@ fn main() {
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Bottle Flip Jam [Demo]".into(),
-                        // resolution: WindowResolution::new(640. * 3., 360. * 3.),
                         resolution: WindowResolution::new(640., 360.),
                         ..default()
                     }),
@@ -49,7 +48,7 @@ fn main() {
                 }),
         )
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
-        .insert_resource(Gravity(Vec2::NEG_Y * 2400.0))
+        .insert_resource(Gravity(Vec2::NEG_Y * 2000.0))
         // .add_plugins(PhysicsDebugPlugin::default())
         .add_plugins((
             CameraPlugin,

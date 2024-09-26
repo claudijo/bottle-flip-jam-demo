@@ -167,10 +167,7 @@ pub fn collect_money(
     }
 }
 
-pub fn despawn_money(
-    mut commands: Commands,
-    money_query: Query<Entity, With<Money>>,
-) {
+pub fn despawn_money(mut commands: Commands, money_query: Query<Entity, With<Money>>) {
     for money in &money_query {
         commands.entity(money).despawn_recursive();
     }
