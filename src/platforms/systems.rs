@@ -4,6 +4,7 @@ use crate::platforms::components::FanAnimationTimer;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 use std::time::Duration;
+use crate::progression::components::WaypointPlatform;
 
 pub fn spawn_ground(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
@@ -46,6 +47,7 @@ pub fn spawn_bench(mut commands: Commands, asset_server: Res<AssetServer>) {
                 CustomCollisionLayer::Platform,
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
+            WaypointPlatform,
         ))
         .with_children(|parent| {
             parent.spawn(SpriteBundle {
@@ -73,6 +75,7 @@ pub fn spawn_cardboard_boxes(mut commands: Commands, asset_server: Res<AssetServ
                     CustomCollisionLayer::Platform,
                     [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
                 ),
+                WaypointPlatform,
             ))
             .with_children(|child_builder| {
                 child_builder.spawn(SpriteBundle {
@@ -108,6 +111,7 @@ pub fn spawn_fan(
                 CustomCollisionLayer::Platform,
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
+            WaypointPlatform,
         ))
         .with_children(|parent| {
             parent.spawn((

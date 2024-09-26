@@ -1,4 +1,6 @@
+use crate::bottle::components::Bottle;
 use crate::config::ASSETS_SCALE_FACTOR;
+use avian2d::prelude::LinearVelocity;
 use bevy::prelude::*;
 
 pub fn spawn_background(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -9,3 +11,4 @@ pub fn spawn_background(mut commands: Commands, asset_server: Res<AssetServer>) 
         ..default()
     });
 }
+

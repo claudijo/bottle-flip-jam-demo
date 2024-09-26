@@ -17,6 +17,9 @@ const CONTENT_DENSITY: f32 = 1.;
 pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
     let bottle_translation = Vec3::new(-90. * ASSETS_SCALE_FACTOR, -16. * ASSETS_SCALE_FACTOR, 10.);
 
+    let mut shape_caster_exclude_entities = vec![];
+
+    // Bottle body
     let bottle = commands
         .spawn((
             VisibilityBundle::default(),
@@ -46,7 +49,6 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
                 GrabZone { radius: 16. },
             ));
 
-            // Bottle body
             parent.spawn(SpriteBundle {
                 texture: asset_server.load("bottle.png"),
                 transform: Transform::from_xyz(0., 2. * ASSETS_SCALE_FACTOR, 0.)
@@ -55,39 +57,47 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             });
 
             // Bottleneck
-            parent.spawn((
-                TransformBundle::from_transform(Transform::from_xyz(
-                    0.,
-                    BOTTLE_BODY_SIZE.y / 2.,
-                    0.,
-                )),
-                ColliderDensity(BOTTLE_DENSITY),
-                Collider::triangle(
-                    Vec2::Y * BOTTLE_NECK_HEIGHT,
-                    Vec2::new(-BOTTLE_BODY_SIZE.x / 2., 0.),
-                    Vec2::new(BOTTLE_BODY_SIZE.x / 2., 0.),
-                ),
-                BottlePart,
-                CollisionLayers::new(
-                    CustomCollisionLayer::Bottle,
-                    [CustomCollisionLayer::Platform],
-                ),
-            ));
+            let bottle_neck = parent
+                .spawn((
+                    TransformBundle::from_transform(Transform::from_xyz(
+                        0.,
+                        BOTTLE_BODY_SIZE.y / 2.,
+                        0.,
+                    )),
+                    ColliderDensity(BOTTLE_DENSITY),
+                    Collider::triangle(
+                        Vec2::Y * BOTTLE_NECK_HEIGHT,
+                        Vec2::new(-BOTTLE_BODY_SIZE.x / 2., 0.),
+                        Vec2::new(BOTTLE_BODY_SIZE.x / 2., 0.),
+                    ),
+                    BottlePart,
+                    CollisionLayers::new(
+                        CustomCollisionLayer::Bottle,
+                        [CustomCollisionLayer::Platform],
+                    ),
+                ))
+                .id();
+
             // Bottle cap
-            parent.spawn((
-                TransformBundle::from_transform(Transform::from_xyz(
-                    0.,
-                    BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT,
-                    0.,
-                )),
-                ColliderDensity(BOTTLE_DENSITY),
-                Collider::rectangle(BOTTLE_CAP_SIZE.x, BOTTLE_CAP_SIZE.y),
-                BottlePart,
-                CollisionLayers::new(
-                    CustomCollisionLayer::Bottle,
-                    [CustomCollisionLayer::Platform],
-                ),
-            ));
+            let bottle_cap = parent
+                .spawn((
+                    TransformBundle::from_transform(Transform::from_xyz(
+                        0.,
+                        BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT,
+                        0.,
+                    )),
+                    ColliderDensity(BOTTLE_DENSITY),
+                    Collider::rectangle(BOTTLE_CAP_SIZE.x, BOTTLE_CAP_SIZE.y),
+                    BottlePart,
+                    CollisionLayers::new(
+                        CustomCollisionLayer::Bottle,
+                        [CustomCollisionLayer::Platform],
+                    ),
+                ))
+                .id();
+
+            shape_caster_exclude_entities.push(bottle_neck);
+            shape_caster_exclude_entities.push(bottle_cap);
         })
         .id();
 
@@ -108,6 +118,8 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             ))
             .id();
 
+        shape_caster_exclude_entities.push(bottle_content);
+
         commands.spawn((
             PrismaticJoint::new(bottle, bottle_content)
                 .with_free_axis(Vec2::Y)
@@ -118,4 +130,18 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             BottleContentJoint,
         ));
     }
+
+    // For detecting if bottle is grounded. See
+    // https://github.com/Jondolf/avian/blob/main/crates/avian2d/examples/dynamic_character_2d/plugin.rs
+    commands.entity(bottle).insert(
+        ShapeCaster::new(
+            Collider::rectangle(BOTTLE_BODY_SIZE.x, BOTTLE_BODY_SIZE.y),
+            Vec2::ZERO,
+            0.,
+            Dir2::Y,
+        )
+        .with_query_filter(SpatialQueryFilter::from_excluded_entities(
+            shape_caster_exclude_entities,
+        )),
+    );
 }

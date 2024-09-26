@@ -12,6 +12,7 @@ pub mod grabber;
 mod level;
 mod physics;
 mod platforms;
+mod progression;
 
 use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
@@ -23,6 +24,7 @@ use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 use bevy::window::WindowResolution;
+use crate::progression::ProgressionPlugin;
 
 fn main() {
     App::new()
@@ -56,6 +58,7 @@ fn main() {
             BottlePlugin,
             GrabberPlugin,
             CollectablesPlugin,
+            ProgressionPlugin,
         ))
         .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
         .run();
