@@ -10,6 +10,7 @@ mod collectables;
 pub mod config;
 pub mod grabber;
 mod level;
+mod main_menu;
 mod physics;
 mod platforms;
 mod progression;
@@ -19,6 +20,7 @@ use crate::camera::CameraPlugin;
 use crate::collectables::CollectablesPlugin;
 use crate::grabber::GrabberPlugin;
 use crate::level::LevelPlugin;
+use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
 use avian2d::prelude::*;
@@ -52,6 +54,7 @@ fn main() {
         // .add_plugins(PhysicsDebugPlugin::default())
         .add_plugins((
             CameraPlugin,
+            MainMenuPlugin,
             LevelPlugin,
             PlatformsPlugin,
             BottlePlugin,

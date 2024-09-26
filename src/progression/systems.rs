@@ -24,6 +24,7 @@ pub fn check_waypoint_completed(
                     .entity(waypoint_platform)
                     .remove::<WaypointPlatform>();
                 match state.get() {
+                    ProgressionWaveState::Zero => {}
                     ProgressionWaveState::First => next_state.set(ProgressionWaveState::Second),
                     ProgressionWaveState::Second => next_state.set(ProgressionWaveState::Third),
                     ProgressionWaveState::Third => {}

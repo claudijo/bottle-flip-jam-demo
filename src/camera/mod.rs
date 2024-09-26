@@ -1,4 +1,5 @@
 use crate::camera::systems::{aim_camera, spawn_camera, zoom_camera};
+use crate::progression::GameState;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
@@ -15,7 +16,8 @@ impl Plugin for CameraPlugin {
             PostUpdate,
             (aim_camera, zoom_camera)
                 .after(PhysicsSet::Sync)
-                .before(TransformSystem::TransformPropagate),
+                .before(TransformSystem::TransformPropagate)
+                .run_if(in_state(GameState::InGame)),
         );
     }
 }

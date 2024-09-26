@@ -1,8 +1,9 @@
 use crate::grabber::resources::{GrabTouchId, Grabbing};
 use crate::grabber::systems::{
-    drag_using_mouse, drag_using_touch, grab_using_mouse, grab_using_touch, release_using_mouse,
-    release_using_touch, spawn_grab_anchor,
+    despawn_grab_anchor, drag_using_mouse, drag_using_touch, grab_using_mouse, grab_using_touch,
+    release_using_mouse, release_using_touch, spawn_grab_anchor,
 };
+use crate::progression::GameState;
 use bevy::prelude::*;
 
 pub mod components;
@@ -15,7 +16,8 @@ impl Plugin for GrabberPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(Grabbing::default());
         app.insert_resource(GrabTouchId::default());
-        app.add_systems(Startup, spawn_grab_anchor);
+        app.add_systems(OnEnter(GameState::InGame), spawn_grab_anchor);
+        app.add_systems(OnExit(GameState::InGame), despawn_grab_anchor);
         app.add_systems(
             Update,
             (
@@ -25,7 +27,8 @@ impl Plugin for GrabberPlugin {
                 drag_using_touch,
                 release_using_mouse,
                 release_using_touch,
-            ),
+            )
+                .run_if(in_state(GameState::InGame)),
         );
     }
 }

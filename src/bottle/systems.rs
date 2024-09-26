@@ -15,7 +15,7 @@ const CONTENT_RADIUS: f32 = 3. * ASSETS_SCALE_FACTOR;
 const CONTENT_DENSITY: f32 = 1.;
 
 pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let bottle_translation = Vec3::new(-90. * ASSETS_SCALE_FACTOR, -16. * ASSETS_SCALE_FACTOR, 10.);
+    let bottle_translation = Vec3::new(-70. * ASSETS_SCALE_FACTOR, -16. * ASSETS_SCALE_FACTOR, 10.);
 
     let mut shape_caster_exclude_entities = vec![];
 

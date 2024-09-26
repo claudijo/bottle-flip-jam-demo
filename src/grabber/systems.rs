@@ -53,6 +53,8 @@ pub fn spawn_grab_anchor(mut commands: Commands) {
     ));
 }
 
+pub fn despawn_grab_anchor() {}
+
 pub fn grab_using_mouse(
     mut commands: Commands,
     camera_query: Query<(&Camera, &GlobalTransform)>,
