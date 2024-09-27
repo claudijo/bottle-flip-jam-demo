@@ -18,3 +18,4 @@ opt-level = 3
 [dependencies]
 avian2d = "0.1.2"
 bevy = "0.14"
+#bevy = { version = "0.14", features = ["mp3"] }

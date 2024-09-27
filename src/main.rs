@@ -14,6 +14,7 @@ mod main_menu;
 mod physics;
 mod platforms;
 mod progression;
+mod soundtrack;
 
 use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
@@ -27,6 +28,7 @@ use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 use bevy::window::WindowResolution;
+use crate::soundtrack::SoundTrackPlugin;
 
 fn main() {
     App::new()
@@ -61,6 +63,7 @@ fn main() {
             GrabberPlugin,
             CollectablesPlugin,
             ProgressionPlugin,
+            SoundTrackPlugin,
         ))
         .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
         .run();
