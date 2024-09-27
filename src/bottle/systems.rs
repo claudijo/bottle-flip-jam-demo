@@ -35,8 +35,9 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
             GrabTarget,
             FocusTarget,
             BottlePart,
-            AngularDamping(1.),
-            LinearDamping(0.5),
+            // Will be adjusted in game loop
+            AngularDamping::default(),
+            LinearDamping::default(),
         ))
         .with_children(|parent| {
             // Grab zone
@@ -148,4 +149,20 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
         ))
         .with_max_time_of_impact(2.),
     );
+}
+
+pub fn adjust_angular_damping(
+    mut bottle_query: Query<(&AngularVelocity, &mut AngularDamping), With<Bottle>>,
+) {
+    for (angular_velocity, mut angular_damping) in &mut bottle_query {
+        angular_damping.0 = (angular_velocity.0 / 10.).powi(2);
+    }
+}
+
+pub fn adjust_linear_damping(
+    mut bottle_query: Query<(&LinearVelocity, &mut LinearDamping), With<Bottle>>,
+) {
+    for (linear_velocity, mut linear_damping) in &mut bottle_query {
+        linear_damping.0 = (linear_velocity.0.length() / 200.).powi(2);
+    }
 }
