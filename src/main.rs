@@ -24,11 +24,11 @@ use crate::level::LevelPlugin;
 use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
+use crate::soundtrack::SoundTrackPlugin;
 use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 use bevy::window::WindowResolution;
-use crate::soundtrack::SoundTrackPlugin;
 
 fn main() {
     App::new()

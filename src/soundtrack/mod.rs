@@ -1,9 +1,9 @@
-mod resources;
 mod components;
+mod resources;
 mod systems;
 
-use bevy::prelude::*;
 use crate::soundtrack::systems::{change_tracks, fade_in, fade_out, setup_tracks};
+use bevy::prelude::*;
 
 pub struct SoundTrackPlugin;
 

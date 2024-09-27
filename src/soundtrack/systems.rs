@@ -1,8 +1,8 @@
-use bevy::prelude::*;
 use crate::progression::GameState;
 use crate::soundtrack::components::{FadeIn, FadeOut};
-use crate::soundtrack::FADE_TIME;
 use crate::soundtrack::resources::SoundtrackPlayer;
+use crate::soundtrack::FADE_TIME;
+use bevy::prelude::*;
 
 pub fn setup_tracks(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(SoundtrackPlayer::new(vec![
@@ -19,19 +19,14 @@ pub fn change_tracks(
     mut state_change_event_reader: EventReader<StateTransitionEvent<GameState>>,
 ) {
     for _ in state_change_event_reader.read() {
-        // Fade out all currently running tracks
         for track in soundtrack.iter() {
+            // Fade out all currently running tracks
             commands.entity(track).insert(FadeOut);
+
+            // Stop fading in all currently running tracks
+            commands.entity(track).remove::<FadeIn>();
         }
 
-        // Fade out all currently running tracks
-        for track in soundtrack.iter() {
-            commands.entity(track).insert(FadeOut);
-        }
-
-        // Spawn a new `AudioBundle` with the appropriate soundtrack based on
-        // the game state.
-        //
         // Volume is set to start at zero and is then increased by the fade_in system.
         match game_state.get() {
             GameState::MainMenu => {
@@ -94,5 +89,3 @@ pub fn fade_out(
         }
     }
 }
-
-
