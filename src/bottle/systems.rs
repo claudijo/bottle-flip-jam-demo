@@ -6,6 +6,7 @@ use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
 use bevy::prelude::*;
+use crate::bottle::resources::SpawnLocation;
 
 const BOTTLE_BODY_SIZE: Vec2 = Vec2::new(8. * ASSETS_SCALE_FACTOR, 15. * ASSETS_SCALE_FACTOR);
 const BOTTLE_NECK_HEIGHT: f32 = 3. * ASSETS_SCALE_FACTOR;
@@ -14,16 +15,14 @@ const BOTTLE_DENSITY: f32 = 0.1;
 const CONTENT_RADIUS: f32 = 3. * ASSETS_SCALE_FACTOR;
 const CONTENT_DENSITY: f32 = 1.;
 
-pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let bottle_translation = Vec3::new(-70. * ASSETS_SCALE_FACTOR, -16. * ASSETS_SCALE_FACTOR, 10.);
-
+pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spawn_location: Res<SpawnLocation>) {
     let mut shape_caster_exclude_entities = vec![];
 
     // Bottle body
     let bottle = commands
         .spawn((
             VisibilityBundle::default(),
-            TransformBundle::from_transform(Transform::from_translation(bottle_translation)),
+            TransformBundle::from_transform(Transform::from_translation(spawn_location.0)),
             ColliderDensity(BOTTLE_DENSITY),
             RigidBody::Dynamic,
             Collider::rectangle(BOTTLE_BODY_SIZE.x, BOTTLE_BODY_SIZE.y),
@@ -106,7 +105,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>) {
         let bottle_content = commands
             .spawn((
                 TransformBundle::from_transform(Transform::from_translation(
-                    bottle_translation + Vec3::Y * offset_y,
+                    spawn_location.0 + Vec3::Y * offset_y,
                 )),
                 ColliderDensity(CONTENT_DENSITY),
                 RigidBody::Dynamic,
@@ -164,5 +163,11 @@ pub fn adjust_linear_damping(
 ) {
     for (linear_velocity, mut linear_damping) in &mut bottle_query {
         linear_damping.0 = (linear_velocity.0.length() / 200.).powi(2);
+    }
+}
+
+pub fn debug_translation(bottle_query: Query<&Transform, With<Bottle>>) {
+    for transform in &bottle_query {
+        println!("Bottle position {:?}", transform.translation)
     }
 }
