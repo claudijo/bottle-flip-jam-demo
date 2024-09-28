@@ -6,8 +6,9 @@ use bevy::prelude::*;
 
 pub fn setup_tracks(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(SoundtrackPlayer::new(vec![
-        asset_server.load::<AudioSource>("sounds/bit_bit_loop.ogg"),
-        asset_server.load::<AudioSource>("sounds/blippy_trance.ogg"),
+        // asset_server.load::<AudioSource>("sounds/bit_bit_loop.ogg"),
+        asset_server.load::<AudioSource>("sounds/neon_gaming.ogg"),
+        asset_server.load::<AudioSource>("sounds/stranger_things.ogg"),
     ]));
 }
 
@@ -43,17 +44,17 @@ pub fn change_tracks(
                 ));
             }
             GameState::InGame => {
-                commands.spawn((
-                    AudioBundle {
-                        source: soundtrack_player.track_list.get(1).unwrap().clone(),
-                        settings: PlaybackSettings {
-                            mode: bevy::audio::PlaybackMode::Loop,
-                            volume: bevy::audio::Volume::ZERO,
-                            ..default()
-                        },
-                    },
-                    FadeIn,
-                ));
+                // commands.spawn((
+                //     AudioBundle {
+                //         source: soundtrack_player.track_list.get(1).unwrap().clone(),
+                //         settings: PlaybackSettings {
+                //             mode: bevy::audio::PlaybackMode::Loop,
+                //             volume: bevy::audio::Volume::ZERO,
+                //             ..default()
+                //         },
+                //     },
+                //     FadeIn,
+                // ));
             }
         }
     }
