@@ -6,7 +6,6 @@ use bevy::prelude::*;
 
 pub fn setup_tracks(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(SoundtrackPlayer::new(vec![
-        // asset_server.load::<AudioSource>("sounds/bit_bit_loop.ogg"),
         asset_server.load::<AudioSource>("sounds/neon_gaming.ogg"),
         asset_server.load::<AudioSource>("sounds/stranger_things.ogg"),
     ]));
