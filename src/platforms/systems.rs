@@ -21,6 +21,7 @@ pub fn spawn_ground(mut commands: Commands, asset_server: Res<AssetServer>) {
                 CustomCollisionLayer::Platform,
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
+            Name::new("Ground collider"),
         ))
         .with_children(|parent| {
             parent.spawn(SpriteBundle {
@@ -48,6 +49,7 @@ pub fn spawn_bench(mut commands: Commands, asset_server: Res<AssetServer>) {
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
             WaypointPlatform,
+            Name::new("Bench collider"),
         ))
         .with_children(|parent| {
             parent.spawn(SpriteBundle {

@@ -5,6 +5,7 @@ use crate::grabber::components::{GrabTarget, GrabZone};
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
+use bevy::core::Name;
 use bevy::prelude::*;
 use crate::bottle::resources::SpawnLocation;
 
@@ -37,6 +38,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
             // Will be adjusted in game loop
             AngularDamping::default(),
             LinearDamping::default(),
+            Name::new("Bottle body collider"),
         ))
         .with_children(|parent| {
             // Grab zone
@@ -75,6 +77,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
                         CustomCollisionLayer::Bottle,
                         [CustomCollisionLayer::Platform],
                     ),
+                    Name::new("Bottle neck collider"),
                 ))
                 .id();
 
@@ -93,6 +96,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
                         CustomCollisionLayer::Bottle,
                         [CustomCollisionLayer::Platform],
                     ),
+                    Name::new("Bottle cap collider"),
                 ))
                 .id();
 
@@ -101,7 +105,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
         })
         .id();
 
-    for offset_y in [CONTENT_RADIUS, -CONTENT_RADIUS] {
+    for offset_y in [CONTENT_RADIUS * ASSETS_SCALE_FACTOR, -CONTENT_RADIUS * ASSETS_SCALE_FACTOR] {
         let bottle_content = commands
             .spawn((
                 TransformBundle::from_transform(Transform::from_translation(
@@ -115,6 +119,7 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
                     [CustomCollisionLayer::Content],
                 ),
                 BottleContent,
+                Name::new("Bottle content collider"),
             ))
             .id();
 
@@ -166,8 +171,8 @@ pub fn adjust_linear_damping(
     }
 }
 
-pub fn debug_translation(bottle_query: Query<&Transform, With<Bottle>>) {
-    for transform in &bottle_query {
-        println!("Bottle position {:?}", transform.translation)
+pub fn debug_physics_values(bottle_query: Query<(&Transform, &LinearVelocity), With<Bottle>>) {
+    for (transform, linear_velocity) in &bottle_query {
+        println!("Bottle values {:?}", linear_velocity);
     }
 }
