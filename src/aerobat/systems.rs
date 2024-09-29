@@ -27,13 +27,13 @@ pub fn update_grounded(
 
 pub fn update_resting_time(
     mut aerobat_query: Query<
-        (Entity, &mut RestingTime, &LinearVelocity, &AngularVelocity),
+        (&mut RestingTime, &LinearVelocity, &AngularVelocity),
         With<Aerobat>,
     >,
     resting_threshold: Res<RestingThreshold>,
     time: Res<Time>,
 ) {
-    for (entity, mut resting_time, linear_velocity, angular_velocity) in &mut aerobat_query {
+    for (mut resting_time, linear_velocity, angular_velocity) in &mut aerobat_query {
         if linear_velocity.length() <= resting_threshold.linear
             && angular_velocity.0 <= resting_threshold.angular
         {

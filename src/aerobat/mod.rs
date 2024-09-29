@@ -15,7 +15,7 @@ impl Plugin for AerobatPlugin {
             linear: 30.,
             angular: 0.15,
         });
-        app.insert_resource(RestingActivationTime(0.6));
+        app.insert_resource(RestingActivationTime(0.4));
         app.add_systems(
             Update,
             (update_grounded, update_resting_time, update_resting)
