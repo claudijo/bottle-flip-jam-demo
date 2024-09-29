@@ -4,6 +4,7 @@
 // Feel free to delete this line.
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
 
+mod aerobat;
 mod bottle;
 mod camera;
 mod collectables;
@@ -16,6 +17,7 @@ mod platforms;
 mod progression;
 mod soundtrack;
 
+use crate::aerobat::AerobatPlugin;
 use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
 use crate::collectables::CollectablesPlugin;
@@ -53,7 +55,7 @@ fn main() {
         )
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
         .insert_resource(Gravity(Vec2::NEG_Y * 2000.0))
-        // .add_plugins(PhysicsDebugPlugin::default())
+        .add_plugins(PhysicsDebugPlugin::default())
         .add_plugins((
             CameraPlugin,
             MainMenuPlugin,
@@ -62,8 +64,9 @@ fn main() {
             BottlePlugin,
             GrabberPlugin,
             CollectablesPlugin,
+            AerobatPlugin,
             ProgressionPlugin,
-            SoundTrackPlugin,
+            // SoundTrackPlugin,
         ))
         .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
         .run();

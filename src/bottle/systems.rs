@@ -1,4 +1,6 @@
+use crate::aerobat::components::{Aerobat, RestingTime};
 use crate::bottle::components::{Bottle, BottleContent, BottleContentJoint, BottlePart};
+use crate::bottle::resources::SpawnLocation;
 use crate::camera::components::FocusTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::grabber::components::{GrabTarget, GrabZone};
@@ -7,7 +9,6 @@ use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
 use bevy::core::Name;
 use bevy::prelude::*;
-use crate::bottle::resources::SpawnLocation;
 
 const BOTTLE_BODY_SIZE: Vec2 = Vec2::new(8. * ASSETS_SCALE_FACTOR, 15. * ASSETS_SCALE_FACTOR);
 const BOTTLE_NECK_HEIGHT: f32 = 3. * ASSETS_SCALE_FACTOR;
@@ -16,7 +17,11 @@ const BOTTLE_DENSITY: f32 = 0.1;
 const CONTENT_RADIUS: f32 = 3. * ASSETS_SCALE_FACTOR;
 const CONTENT_DENSITY: f32 = 1.;
 
-pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spawn_location: Res<SpawnLocation>) {
+pub fn spawn_bottle(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    spawn_location: Res<SpawnLocation>,
+) {
     let mut shape_caster_exclude_entities = vec![];
 
     // Bottle body
@@ -35,10 +40,12 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
             GrabTarget,
             FocusTarget,
             BottlePart,
+            Aerobat,
+            RestingTime(0.),
+            Name::new("Bottle body collider"),
             // Will be adjusted in game loop
             AngularDamping::default(),
             LinearDamping::default(),
-            Name::new("Bottle body collider"),
         ))
         .with_children(|parent| {
             // Grab zone
@@ -105,7 +112,10 @@ pub fn spawn_bottle(mut commands: Commands, asset_server: Res<AssetServer>, spaw
         })
         .id();
 
-    for offset_y in [CONTENT_RADIUS * ASSETS_SCALE_FACTOR, -CONTENT_RADIUS * ASSETS_SCALE_FACTOR] {
+    for offset_y in [
+        CONTENT_RADIUS * ASSETS_SCALE_FACTOR,
+        -CONTENT_RADIUS * ASSETS_SCALE_FACTOR,
+    ] {
         let bottle_content = commands
             .spawn((
                 TransformBundle::from_transform(Transform::from_translation(
@@ -173,6 +183,6 @@ pub fn adjust_linear_damping(
 
 pub fn debug_physics_values(bottle_query: Query<(&Transform, &LinearVelocity), With<Bottle>>) {
     for (transform, linear_velocity) in &bottle_query {
-        println!("Bottle values {:?}", linear_velocity);
+        println!("Bottle values {:?}", linear_velocity.length());
     }
 }
