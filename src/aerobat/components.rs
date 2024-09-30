@@ -13,6 +13,7 @@ pub struct RestingTime(pub f32);
 pub struct Resting;
 
 #[derive(Component)]
-pub struct Flipped {
-    start_rotation: f32,
+#[allow(dead_code)]
+pub struct FlipMeter {
+    pub start_rotation: Quat,
 }

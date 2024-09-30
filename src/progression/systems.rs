@@ -1,26 +1,38 @@
-use crate::aerobat::components::{Aerobat, Grounded, Resting};
+use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting};
 use crate::progression::components::WaypointPlatform;
-use crate::progression::ProgressionWaveState;
+use crate::progression::states::{LevelState, RoundState};
 use bevy::prelude::*;
 
-pub fn check_waypoint_completed(
-    mut commands: Commands,
+pub fn end_round(
     waypoint_platform_query: Query<Entity, With<WaypointPlatform>>,
-    state: Res<State<ProgressionWaveState>>,
-    mut next_state: ResMut<NextState<ProgressionWaveState>>,
-    aerobat_query: Query<&Grounded, (With<Aerobat>, Added<Resting>)>,
+    mut next_round_state: ResMut<NextState<RoundState>>,
+    aerobat_query: Query<&Grounded, (With<Aerobat>, With<FlipMeter>, Added<Resting>)>,
 ) {
     for grounded in &aerobat_query {
-        for waypoint in &waypoint_platform_query {
-            if grounded.0 == Some(waypoint) {
-                commands.entity(waypoint).remove::<WaypointPlatform>();
-                match state.get() {
-                    ProgressionWaveState::Zero => {}
-                    ProgressionWaveState::First => next_state.set(ProgressionWaveState::Second),
-                    ProgressionWaveState::Second => next_state.set(ProgressionWaveState::Third),
-                    ProgressionWaveState::Third => {}
-                }
-            }
+        let on_waypoint_platform = waypoint_platform_query
+            .iter()
+            .any(|waypoint| grounded.0 == Some(waypoint));
+        if on_waypoint_platform {
+            next_round_state.set(RoundState::Finished);
+        } else {
+            next_round_state.set(RoundState::Unfinished);
         }
     }
+}
+
+pub fn start_first_round(mut next_round_state: ResMut<NextState<RoundState>>) {
+    next_round_state.set(RoundState::Start);
+}
+
+pub fn start_next_round(
+    level_state: Res<State<LevelState>>,
+    mut next_level_state: ResMut<NextState<LevelState>>,
+    mut next_round_state: ResMut<NextState<RoundState>>,
+) {
+    next_level_state.set(level_state.next());
+    next_round_state.set(RoundState::Start);
+}
+
+pub fn restart_round(mut next_round_state: ResMut<NextState<RoundState>>) {
+    next_round_state.set(RoundState::Start);
 }

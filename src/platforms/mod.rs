@@ -1,7 +1,9 @@
 use crate::platforms::systems::{
-    animate_fan, spawn_bench, spawn_cardboard_boxes, spawn_fan, spawn_ground,
+    animate_fan, remove_waypoint_marker, spawn_bench, spawn_cardboard_boxes, spawn_fan,
+    spawn_ground,
 };
-use crate::progression::{GameState, ProgressionWaveState};
+
+use crate::progression::states::{GameState, LevelState, RoundState};
 use bevy::prelude::*;
 
 mod components;
@@ -12,16 +14,21 @@ pub struct PlatformsPlugin;
 impl Plugin for PlatformsPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
-            OnEnter(ProgressionWaveState::First),
+            OnEnter(LevelState::First),
             spawn_bench.run_if(in_state(GameState::InGame)),
         );
         app.add_systems(
-            OnEnter(ProgressionWaveState::Second),
+            OnEnter(LevelState::Second),
             spawn_cardboard_boxes.run_if(in_state(GameState::InGame)),
         );
         app.add_systems(
-            OnEnter(ProgressionWaveState::Third),
+            OnEnter(LevelState::Third),
             spawn_fan.run_if(in_state(GameState::InGame)),
+        );
+
+        app.add_systems(
+            OnEnter(RoundState::Finished),
+            remove_waypoint_marker.run_if(in_state(GameState::InGame)),
         );
 
         app.add_systems(Startup, spawn_ground);

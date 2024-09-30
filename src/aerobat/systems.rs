@@ -1,5 +1,6 @@
-use crate::aerobat::components::{Aerobat, Grounded, Resting, RestingTime};
+use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting, RestingTime};
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
+use crate::grabber::events::Released;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
@@ -26,10 +27,7 @@ pub fn update_grounded(
 }
 
 pub fn update_resting_time(
-    mut aerobat_query: Query<
-        (&mut RestingTime, &LinearVelocity, &AngularVelocity),
-        With<Aerobat>,
-    >,
+    mut aerobat_query: Query<(&mut RestingTime, &LinearVelocity, &AngularVelocity), With<Aerobat>>,
     resting_threshold: Res<RestingThreshold>,
     time: Res<Time>,
 ) {
@@ -54,6 +52,20 @@ pub fn update_resting(
             commands.entity(entity).insert(Resting);
         } else {
             commands.entity(entity).remove::<Resting>();
+        }
+    }
+}
+
+pub fn insert_flip_meter_on_release(
+    mut commands: Commands,
+    aerobat_query: Query<(Entity, &Transform), With<Aerobat>>,
+    mut release_event_reader: EventReader<Released>,
+) {
+    for _ in release_event_reader.read() {
+        for (aerobat, transform) in &aerobat_query {
+            commands.entity(aerobat).insert(FlipMeter {
+                start_rotation: transform.rotation,
+            });
         }
     }
 }

@@ -6,6 +6,15 @@ use avian2d::prelude::*;
 use bevy::prelude::*;
 use std::time::Duration;
 
+pub fn remove_waypoint_marker(
+    mut commands: Commands,
+    waypoint_platform_query: Query<Entity, With<WaypointPlatform>>,
+) {
+    for waypoint in &waypoint_platform_query {
+        commands.entity(waypoint).remove::<WaypointPlatform>();
+    }
+}
+
 pub fn spawn_ground(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn((

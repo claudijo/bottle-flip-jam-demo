@@ -1,6 +1,6 @@
 use crate::aerobat::components::{Aerobat, RestingTime};
 use crate::bottle::components::{Bottle, BottleContent, BottleContentJoint, BottlePart};
-use crate::bottle::resources::SpawnLocation;
+use crate::bottle::resources::SpawnPoint;
 use crate::camera::components::FocusTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::grabber::components::{GrabTarget, GrabZone};
@@ -17,10 +17,26 @@ const BOTTLE_DENSITY: f32 = 0.1;
 const CONTENT_RADIUS: f32 = 3. * ASSETS_SCALE_FACTOR;
 const CONTENT_DENSITY: f32 = 1.;
 
+pub fn set_spawn_point_1(mut spawn_point: ResMut<SpawnPoint>) {
+    spawn_point.0 = Vec3::new(-90. * ASSETS_SCALE_FACTOR, -12. * ASSETS_SCALE_FACTOR, 10.);
+}
+
+pub fn set_spawn_point_2(mut spawn_point: ResMut<SpawnPoint>) {
+    spawn_point.0 = Vec3::new(-30. * ASSETS_SCALE_FACTOR, -2. * ASSETS_SCALE_FACTOR, 10.);
+}
+
+pub fn set_spawn_point_3(mut spawn_point: ResMut<SpawnPoint>) {
+    spawn_point.0 = Vec3::new(54. * ASSETS_SCALE_FACTOR, 30. * ASSETS_SCALE_FACTOR, 10.);
+}
+
+pub fn set_spawn_point_4(mut spawn_point: ResMut<SpawnPoint>) {
+    spawn_point.0 = Vec3::new(112. * ASSETS_SCALE_FACTOR, 52. * ASSETS_SCALE_FACTOR, 10.);
+}
+
 pub fn spawn_bottle(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    spawn_location: Res<SpawnLocation>,
+    spawn_location: Res<SpawnPoint>,
 ) {
     let mut shape_caster_exclude_entities = vec![];
 
@@ -165,6 +181,12 @@ pub fn spawn_bottle(
     );
 }
 
+pub fn despawn_bottle(mut commands: Commands, bottle_query: Query<Entity, With<Bottle>>) {
+    for entity in &bottle_query {
+        commands.entity(entity).despawn_recursive();
+    }
+}
+
 pub fn adjust_angular_damping(
     mut bottle_query: Query<(&AngularVelocity, &mut AngularDamping), With<Bottle>>,
 ) {
@@ -178,11 +200,5 @@ pub fn adjust_linear_damping(
 ) {
     for (linear_velocity, mut linear_damping) in &mut bottle_query {
         linear_damping.0 = (linear_velocity.0.length() / 200.).powi(2);
-    }
-}
-
-pub fn debug_physics_values(bottle_query: Query<(&Transform, &LinearVelocity), With<Bottle>>) {
-    for (transform, linear_velocity) in &bottle_query {
-        println!("Bottle values {:?}", linear_velocity.length());
     }
 }

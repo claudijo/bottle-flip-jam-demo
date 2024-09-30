@@ -4,7 +4,7 @@ mod systems;
 use crate::main_menu::systems::{
     despawn_main_menu, handle_play_button_interactions, spawn_main_menu,
 };
-use crate::progression::GameState;
+use crate::progression::states::GameState;
 use bevy::prelude::*;
 
 pub struct MainMenuPlugin;

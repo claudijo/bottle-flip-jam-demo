@@ -1,5 +1,5 @@
 use crate::camera::systems::{aim_camera, spawn_camera, zoom_camera};
-use crate::progression::GameState;
+use crate::progression::states::GameState;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 

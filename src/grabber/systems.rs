@@ -1,4 +1,5 @@
 use crate::grabber::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
+use crate::grabber::events::Released;
 use crate::grabber::resources::{GrabTouchId, Grabbing};
 use avian2d::prelude::*;
 use bevy::input::touch::TouchPhase;
@@ -196,11 +197,13 @@ pub fn release_using_mouse(
     joint_query: Query<Entity, With<GrabJoint>>,
     buttons: Res<ButtonInput<MouseButton>>,
     mut grabbing: ResMut<Grabbing>,
+    mut released_event_writer: EventWriter<Released>,
 ) {
     if buttons.just_released(MouseButton::Left) {
         for joint in &joint_query {
             commands.entity(joint).despawn();
             grabbing.0 = false;
+            released_event_writer.send(Released(joint));
         }
     }
 }
@@ -211,6 +214,7 @@ pub fn release_using_touch(
     mut grab_touch_id: ResMut<GrabTouchId>,
     mut touch_event_reader: EventReader<TouchInput>,
     mut grabbing: ResMut<Grabbing>,
+    mut released_event_writer: EventWriter<Released>,
 ) {
     if grab_touch_id.0.is_none() {
         return;
@@ -224,10 +228,11 @@ pub fn release_using_touch(
 
             for joint in &joint_query {
                 commands.entity(joint).despawn();
+                grabbing.0 = false;
+                grab_touch_id.0 = None;
+                released_event_writer.send(Released(joint));
             }
 
-            grabbing.0 = false;
-            grab_touch_id.0 = None;
             return;
         }
     }

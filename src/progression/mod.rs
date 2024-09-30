@@ -1,29 +1,21 @@
-use crate::progression::systems::check_waypoint_completed;
+use crate::progression::states::{GameState, LevelState, RoundState};
+use crate::progression::systems::{end_round, restart_round, start_first_round, start_next_round};
 use bevy::prelude::*;
 
 pub mod components;
+pub mod states;
 mod systems;
-
-#[derive(States, Debug, Clone, PartialEq, Eq, Hash)]
-pub enum ProgressionWaveState {
-    Zero,
-    First,
-    Second,
-    Third,
-}
-
-#[derive(States, Debug, Clone, PartialEq, Eq, Hash)]
-pub enum GameState {
-    MainMenu,
-    InGame,
-}
 
 pub struct ProgressionPlugin;
 
 impl Plugin for ProgressionPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_state(GameState::MainMenu);
-        app.insert_state(ProgressionWaveState::Zero);
-        app.add_systems(Update, check_waypoint_completed);
+        app.insert_state(RoundState::default());
+        app.insert_state(LevelState::default());
+        app.insert_state(GameState::default());
+        app.add_systems(OnEnter(GameState::InGame), start_first_round);
+        app.add_systems(OnEnter(RoundState::Finished), start_next_round);
+        app.add_systems(OnEnter(RoundState::Unfinished), restart_round);
+        app.add_systems(Update, end_round.run_if(in_state(GameState::InGame)));
     }
 }

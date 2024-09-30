@@ -26,7 +26,6 @@ use crate::level::LevelPlugin;
 use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
-use crate::soundtrack::SoundTrackPlugin;
 use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
@@ -55,7 +54,7 @@ fn main() {
         )
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
         .insert_resource(Gravity(Vec2::NEG_Y * 2000.0))
-        .add_plugins(PhysicsDebugPlugin::default())
+        // .add_plugins(PhysicsDebugPlugin::default())
         .add_plugins((
             CameraPlugin,
             MainMenuPlugin,
