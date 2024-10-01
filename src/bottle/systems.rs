@@ -4,6 +4,7 @@ use crate::bottle::resources::SpawnPoint;
 use crate::camera::components::FocusTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::grabber::components::{GrabTarget, GrabZone};
+use crate::grabber::resources::Grabbing;
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
@@ -213,5 +214,26 @@ pub fn adjust_linear_damping(
 ) {
     for (linear_velocity, mut linear_damping) in &mut bottle_query {
         linear_damping.0 = (linear_velocity.0.length() / 200.).powi(2);
+    }
+}
+
+pub fn update_collision_layers_for_grabbed_bottle(
+    mut bottle_part_query: Query<&mut CollisionLayers, With<BottlePart>>,
+    grabbing: Res<Grabbing>,
+) {
+    if !grabbing.is_changed() {
+        return;
+    }
+
+    for mut collision_layer in &mut bottle_part_query {
+        if grabbing.0 {
+            collision_layer
+                .memberships
+                .remove(CustomCollisionLayer::Bottle);
+        } else {
+            collision_layer
+                .memberships
+                .add(CustomCollisionLayer::Bottle);
+        }
     }
 }

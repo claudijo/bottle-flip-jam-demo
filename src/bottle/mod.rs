@@ -2,6 +2,7 @@ use crate::bottle::resources::SpawnPoint;
 use crate::bottle::systems::{
     adjust_angular_damping, adjust_linear_damping, despawn_bottle, set_spawn_point_1,
     set_spawn_point_2, set_spawn_point_3, set_spawn_point_4, spawn_bottle,
+    update_collision_layers_for_grabbed_bottle,
 };
 use crate::progression::states::{GameState, LevelState, RoundState};
 use bevy::prelude::*;
@@ -30,6 +31,10 @@ impl Plugin for BottlePlugin {
         app.add_systems(
             Update,
             (adjust_angular_damping, adjust_linear_damping).run_if(in_state(GameState::InGame)),
+        );
+        app.add_systems(
+            Update,
+            update_collision_layers_for_grabbed_bottle.run_if(in_state(GameState::InGame)),
         );
         app.add_systems(OnExit(LevelState::Initial), set_spawn_point_1);
         app.add_systems(OnExit(LevelState::First), set_spawn_point_2);
