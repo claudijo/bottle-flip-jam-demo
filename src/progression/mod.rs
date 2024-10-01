@@ -1,8 +1,10 @@
+use crate::progression::resources::RoundId;
 use crate::progression::states::{GameState, LevelState, RoundState};
 use crate::progression::systems::{end_round, restart_round, start_first_round, start_next_round};
 use bevy::prelude::*;
 
 pub mod components;
+pub mod resources;
 pub mod states;
 mod systems;
 
@@ -13,6 +15,7 @@ impl Plugin for ProgressionPlugin {
         app.insert_state(RoundState::default());
         app.insert_state(LevelState::default());
         app.insert_state(GameState::default());
+        app.insert_resource(RoundId(0));
         app.add_systems(OnEnter(GameState::InGame), start_first_round);
         app.add_systems(OnEnter(RoundState::Finished), start_next_round);
         app.add_systems(OnEnter(RoundState::Unfinished), restart_round);

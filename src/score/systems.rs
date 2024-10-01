@@ -1,17 +1,20 @@
 use crate::score::components::ScoreDisplay;
+use crate::score::events::ScoreEvent;
 use crate::score::resources::Score;
 use bevy::prelude::*;
+use std::collections::hash_map::Entry;
+use std::collections::HashMap;
 
 pub fn spawn_score_display(
     mut commands: Commands,
     mut score: ResMut<Score>,
     asset_server: Res<AssetServer>,
 ) {
-    score.0 = 0;
+    score.0 = HashMap::<u64, u32>::new();
 
     commands.spawn((
         TextBundle::from_section(
-            format!("{:?}", score.0),
+            format!("{:?}", score.0.values().sum::<u32>()),
             TextStyle {
                 font: asset_server.load("fonts/cyberpunk_pixel.otf"),
                 font_size: 40.,
@@ -52,4 +55,26 @@ pub fn spawn_score_icon(
         },
         TextureAtlas::from(texture_atlas_handle),
     ));
+}
+
+pub fn update_score_display(
+    mut score_display_query: Query<&mut Text, With<ScoreDisplay>>,
+    score: Res<Score>,
+) {
+    if score.is_changed() {
+        for mut text in &mut score_display_query {
+            text.sections[0].value = format!("{:?}", score.0.values().sum::<u32>());
+        }
+    }
+}
+
+pub fn collect_score(mut score: ResMut<Score>, mut score_event_reader: EventReader<ScoreEvent>) {
+    for event in score_event_reader.read() {
+        if let Entry::Vacant(vacant_entry) = score.0.entry(event.round_id) {
+            vacant_entry.insert(event.value);
+        } else {
+            let new_score = score.0.get_mut(&event.round_id).unwrap();
+            *new_score += event.value;
+        }
+    }
 }

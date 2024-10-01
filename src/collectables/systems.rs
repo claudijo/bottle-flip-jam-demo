@@ -2,6 +2,9 @@ use crate::bottle::components::BottlePart;
 use crate::collectables::components::Money;
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::grabber::resources::Grabbing;
+use crate::progression::resources::RoundId;
+use crate::score::events::ScoreEvent;
+use crate::score::COLLECT_MONEY_SCORE;
 use avian2d::prelude::{Collider, Collision, RigidBody, Sensor};
 use bevy::prelude::*;
 
@@ -140,6 +143,8 @@ pub fn collect_money(
     bottle_part_query: Query<Entity, With<BottlePart>>,
     money_query: Query<Entity, With<Money>>,
     grabbing: Res<Grabbing>,
+    mut score_event_writer: EventWriter<ScoreEvent>,
+    round_id: Res<RoundId>,
 ) {
     if grabbing.0 {
         return;
@@ -156,9 +161,13 @@ pub fn collect_money(
                 }
 
                 if contacts.entity1 == bottle_part && contacts.entity2 == money {
+                    score_event_writer.send(ScoreEvent::new(COLLECT_MONEY_SCORE, round_id.0));
+
                     despawned.push(contacts.entity2);
                     commands.entity(contacts.entity2).despawn_recursive();
                 } else if contacts.entity1 == money && contacts.entity2 == bottle_part {
+                    score_event_writer.send(ScoreEvent::new(COLLECT_MONEY_SCORE, round_id.0));
+
                     despawned.push(contacts.entity1);
                     commands.entity(contacts.entity1).despawn_recursive();
                 }
