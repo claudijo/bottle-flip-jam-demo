@@ -36,7 +36,7 @@ pub fn spawn_ground(mut commands: Commands, asset_server: Res<AssetServer>) {
             parent.spawn(SpriteBundle {
                 transform: Transform::from_xyz(0., -16. * ASSETS_SCALE_FACTOR, 0.)
                     .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
-                texture: asset_server.load("ground.png"),
+                texture: asset_server.load("images/ground.png"),
                 ..default()
             });
         });
@@ -64,7 +64,7 @@ pub fn spawn_bench(mut commands: Commands, asset_server: Res<AssetServer>) {
             parent.spawn(SpriteBundle {
                 transform: Transform::from_xyz(1.5, 4.5 * ASSETS_SCALE_FACTOR, 0.)
                     .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
-                texture: asset_server.load("bench.png"),
+                texture: asset_server.load("images/bench.png"),
                 ..default()
             });
         });
@@ -90,7 +90,7 @@ pub fn spawn_cardboard_boxes(mut commands: Commands, asset_server: Res<AssetServ
             ))
             .with_children(|child_builder| {
                 child_builder.spawn(SpriteBundle {
-                    texture: asset_server.load("cardboard_box.png"),
+                    texture: asset_server.load("images/cardboard_box.png"),
                     transform: Transform::from_xyz(0., 3. * ASSETS_SCALE_FACTOR, 0.)
                         .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
                     ..default()
@@ -104,7 +104,7 @@ pub fn spawn_fan(
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
 ) {
-    let texture_handle = asset_server.load("fan_sprite.png");
+    let texture_handle = asset_server.load("images/fan_sprite.png");
     let texture_atlas = TextureAtlasLayout::from_grid(UVec2::splat(32), 4, 1, None, None);
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
 

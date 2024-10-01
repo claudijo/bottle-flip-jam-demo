@@ -75,7 +75,7 @@ pub fn spawn_bottle(
             ));
 
             parent.spawn(SpriteBundle {
-                texture: asset_server.load("bottle.png"),
+                texture: asset_server.load("images/bottle.png"),
                 transform: Transform::from_xyz(0., 2. * ASSETS_SCALE_FACTOR, 0.)
                     .with_scale(Vec3::ONE * ASSETS_SCALE_FACTOR),
                 ..default()

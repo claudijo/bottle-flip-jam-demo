@@ -11,7 +11,7 @@ pub fn spawn_money_trail(
     mut texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
     trail_configs: Vec<(Vec3, usize)>,
 ) {
-    let texture_handle = asset_server.load("money_sprite.png");
+    let texture_handle = asset_server.load("images/money_sprite.png");
     let texture_atlas = TextureAtlasLayout::from_grid(UVec2::splat(24), 6, 1, None, None);
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
 

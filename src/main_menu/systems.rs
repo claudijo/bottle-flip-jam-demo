@@ -27,7 +27,7 @@ pub fn spawn_main_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
                     height: Val::Px(64. * ASSETS_SCALE_FACTOR),
                     ..default()
                 },
-                image: UiImage::new(asset_server.load("jumbotron.png")),
+                image: UiImage::new(asset_server.load("images/jumbotron.png")),
                 ..default()
             });
 
@@ -53,7 +53,7 @@ pub fn spawn_main_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
                             height: Val::Px(32. * ASSETS_SCALE_FACTOR),
                             ..default()
                         },
-                        image: UiImage::new(asset_server.load("play_button.png")),
+                        image: UiImage::new(asset_server.load("images/play_button.png")),
                         ..default()
                     });
                 });

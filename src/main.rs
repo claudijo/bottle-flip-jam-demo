@@ -15,6 +15,7 @@ mod main_menu;
 mod physics;
 mod platforms;
 mod progression;
+mod score;
 mod soundtrack;
 
 use crate::aerobat::AerobatPlugin;
@@ -26,6 +27,7 @@ use crate::level::LevelPlugin;
 use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
+use crate::score::ScorePlugin;
 use avian2d::prelude::*;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
@@ -65,6 +67,7 @@ fn main() {
             CollectablesPlugin,
             AerobatPlugin,
             ProgressionPlugin,
+            ScorePlugin,
             // SoundTrackPlugin,
         ))
         .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
