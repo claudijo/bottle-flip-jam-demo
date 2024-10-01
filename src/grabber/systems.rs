@@ -6,6 +6,8 @@ use bevy::input::touch::TouchPhase;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
+const TOUCH_ANCHOR_OFFSET: f32 = 16.;
+
 fn world_from_viewport(
     camera: &Camera,
     camera_transform: &GlobalTransform,
@@ -60,7 +62,7 @@ pub fn grab_using_mouse(
     mut commands: Commands,
     camera_query: Query<(&Camera, &GlobalTransform)>,
     windows: Query<&Window, With<PrimaryWindow>>,
-    anchor_query: Query<Entity, With<GrabAnchor>>,
+    mut anchor_query: Query<(Entity, &mut Transform), With<GrabAnchor>>,
     target_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
     grab_zone_query: Query<(&GlobalTransform, &GrabZone)>,
     buttons: Res<ButtonInput<MouseButton>>,
@@ -75,7 +77,7 @@ pub fn grab_using_mouse(
             return;
         };
 
-        for anchor in &anchor_query {
+        for (anchor, mut anchor_transform) in &mut anchor_query {
             for (bottle, bottle_transform) in &target_query {
                 for (grab_zone_transform, grab_zone) in &grab_zone_query {
                     if try_grab_target(
@@ -87,6 +89,7 @@ pub fn grab_using_mouse(
                         grab_zone_transform,
                         grab_zone,
                     ) {
+                        anchor_transform.translation = cursor_position.extend(0.);
                         grabbing.0 = true;
                         return;
                     }
@@ -99,7 +102,7 @@ pub fn grab_using_mouse(
 pub fn grab_using_touch(
     mut commands: Commands,
     camera_query: Query<(&Camera, &GlobalTransform)>,
-    anchor_query: Query<Entity, With<GrabAnchor>>,
+    mut anchor_query: Query<(Entity, &mut Transform), With<GrabAnchor>>,
     target_query: Query<(Entity, &GlobalTransform), With<GrabTarget>>,
     grab_zone_query: Query<(&GlobalTransform, &GrabZone)>,
     touches: Res<Touches>,
@@ -119,7 +122,7 @@ pub fn grab_using_touch(
                 return;
             };
 
-            for anchor in &anchor_query {
+            for (anchor, mut anchor_transform) in &mut anchor_query {
                 for (bottle, bottle_transform) in &target_query {
                     for (grab_zone_transform, grab_zone) in &grab_zone_query {
                         if try_grab_target(
@@ -131,6 +134,8 @@ pub fn grab_using_touch(
                             grab_zone_transform,
                             grab_zone,
                         ) {
+                            anchor_transform.translation =
+                                cursor_position.extend(0.) - Vec3::Y * TOUCH_ANCHOR_OFFSET;
                             grabbing.0 = true;
                             grab_touch_id.0 = Some(touch.id());
                             return;
@@ -184,7 +189,8 @@ pub fn drag_using_touch(
             };
 
             for mut anchor_transform in &mut anchor_query {
-                anchor_transform.translation = cursor_point.extend(0.) - Vec3::Y * 16.;
+                anchor_transform.translation =
+                    cursor_point.extend(0.) - Vec3::Y * TOUCH_ANCHOR_OFFSET;
             }
 
             return;

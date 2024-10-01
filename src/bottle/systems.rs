@@ -72,7 +72,7 @@ pub fn spawn_bottle(
                     BOTTLE_BODY_SIZE.y / 2. + BOTTLE_NECK_HEIGHT,
                     0.,
                 )),
-                GrabZone { radius: 16. },
+                GrabZone { radius: 24. },
             ));
 
             parent.spawn(SpriteBundle {
@@ -217,23 +217,14 @@ pub fn adjust_linear_damping(
     }
 }
 
-pub fn update_collision_layers_for_grabbed_bottle(
-    mut bottle_part_query: Query<&mut CollisionLayers, With<BottlePart>>,
+pub fn filter_collisions_for_grabbed_bottle(
+    mut collisions: ResMut<Collisions>,
+    query: Query<(), With<BottlePart>>,
     grabbing: Res<Grabbing>,
 ) {
-    if !grabbing.is_changed() {
-        return;
-    }
-
-    for mut collision_layer in &mut bottle_part_query {
-        if grabbing.0 {
-            collision_layer
-                .memberships
-                .remove(CustomCollisionLayer::Bottle);
-        } else {
-            collision_layer
-                .memberships
-                .add(CustomCollisionLayer::Bottle);
-        }
+    if grabbing.0 {
+        collisions.retain(|contacts| {
+            !query.contains(contacts.entity1) && !query.contains(contacts.entity2)
+        });
     }
 }
