@@ -16,7 +16,7 @@ impl Plugin for AerobatPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(RestingThreshold {
             linear: 30.,
-            angular: 0.15,
+            angular: 0.2,
         });
         app.insert_resource(RestingActivationTime(0.4));
         app.add_systems(

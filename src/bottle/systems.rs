@@ -181,8 +181,21 @@ pub fn spawn_bottle(
     );
 }
 
-pub fn despawn_bottle(mut commands: Commands, bottle_query: Query<Entity, With<Bottle>>) {
+pub fn despawn_bottle(
+    mut commands: Commands,
+    bottle_query: Query<Entity, With<Bottle>>,
+    content_query: Query<Entity, With<BottleContent>>,
+    joint_query: Query<Entity, With<BottleContentJoint>>,
+) {
     for entity in &bottle_query {
+        commands.entity(entity).despawn_recursive();
+    }
+
+    for entity in &content_query {
+        commands.entity(entity).despawn_recursive();
+    }
+
+    for entity in &joint_query {
         commands.entity(entity).despawn_recursive();
     }
 }

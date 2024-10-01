@@ -33,7 +33,7 @@ pub fn update_resting_time(
 ) {
     for (mut resting_time, linear_velocity, angular_velocity) in &mut aerobat_query {
         if linear_velocity.length() <= resting_threshold.linear
-            && angular_velocity.0 <= resting_threshold.angular
+            && angular_velocity.0.abs() <= resting_threshold.angular
         {
             resting_time.0 += time.delta_seconds();
         } else {
