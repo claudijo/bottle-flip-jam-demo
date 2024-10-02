@@ -1,6 +1,7 @@
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
 use crate::aerobat::systems::{
-    insert_flip_meter_on_release, update_grounded, update_resting, update_resting_time,
+    insert_flip_meter_on_release, track_flip_rotation, update_grounded, update_resting,
+    update_resting_time,
 };
 
 use crate::progression::states::GameState;
@@ -9,6 +10,13 @@ use bevy::prelude::*;
 pub mod components;
 mod resources;
 mod systems;
+
+#[derive(Debug)]
+pub enum LandingType {
+    Upright,
+    Cap,
+    Side,
+}
 
 pub struct AerobatPlugin;
 
@@ -26,7 +34,29 @@ impl Plugin for AerobatPlugin {
         );
         app.add_systems(
             Update,
-            insert_flip_meter_on_release.run_if(in_state(GameState::InGame)),
+            (insert_flip_meter_on_release, track_flip_rotation).run_if(in_state(GameState::InGame)),
         );
+    }
+}
+
+pub fn evaluate_landing_type(rotation: &Quat) -> LandingType {
+    let angle = rotation.angle_between(Quat::from_rotation_z(0.));
+
+    if (angle.to_degrees() - 180.).abs() < 2. {
+        return LandingType::Cap;
+    }
+
+    if (angle.to_degrees()).abs() < 2. {
+        return LandingType::Upright;
+    }
+
+    LandingType::Side
+}
+
+pub fn count_landing_revolutions(landing_type: &LandingType, rotation_angle: f32) -> u32 {
+    match landing_type {
+        LandingType::Upright => ((rotation_angle.to_degrees() + 180.) / 360.) as u32,
+        LandingType::Cap => ((rotation_angle.to_degrees() + 270.) / 360.) as u32,
+        LandingType::Side => (rotation_angle.to_degrees() / 360.) as u32,
     }
 }

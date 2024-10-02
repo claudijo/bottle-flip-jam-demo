@@ -1,5 +1,5 @@
 use crate::score::components::ScoreDisplay;
-use crate::score::events::ScoreEvent;
+use crate::score::events::{BonusEvent, ScoreEvent};
 use crate::score::resources::Score;
 use bevy::prelude::*;
 use std::collections::hash_map::Entry;
@@ -75,6 +75,14 @@ pub fn collect_score(mut score: ResMut<Score>, mut score_event_reader: EventRead
         } else {
             let new_score = score.0.get_mut(&event.round_id).unwrap();
             *new_score += event.value;
+        }
+    }
+}
+
+pub fn collect_bonus(mut score: ResMut<Score>, mut bonus_event_reader: EventReader<BonusEvent>) {
+    for event in bonus_event_reader.read() {
+        if let Some(new_score) = score.0.get_mut(&event.round_id) {
+            *new_score *= event.value;
         }
     }
 }

@@ -14,6 +14,4 @@ pub struct Resting;
 
 #[derive(Component)]
 #[allow(dead_code)]
-pub struct FlipMeter {
-    pub start_rotation: Quat,
-}
+pub struct FlipMeter(pub f32);

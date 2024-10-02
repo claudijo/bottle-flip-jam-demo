@@ -58,14 +58,22 @@ pub fn update_resting(
 
 pub fn insert_flip_meter_on_release(
     mut commands: Commands,
-    aerobat_query: Query<(Entity, &Transform), With<Aerobat>>,
+    aerobat_query: Query<Entity, With<Aerobat>>,
     mut release_event_reader: EventReader<Released>,
 ) {
     for _ in release_event_reader.read() {
-        for (aerobat, transform) in &aerobat_query {
-            commands.entity(aerobat).insert(FlipMeter {
-                start_rotation: transform.rotation,
-            });
+        for aerobat in &aerobat_query {
+            commands.entity(aerobat).insert(FlipMeter(0.));
         }
+    }
+}
+
+pub fn track_flip_rotation(
+    mut aerobat_query: Query<(&mut FlipMeter, &AngularVelocity), With<Aerobat>>,
+    time: Res<Time>,
+) {
+    for (mut flip_meter, angular_velocity) in &mut aerobat_query {
+        let rotation_step = angular_velocity.0 * time.delta_seconds();
+        flip_meter.0 += rotation_step;
     }
 }
