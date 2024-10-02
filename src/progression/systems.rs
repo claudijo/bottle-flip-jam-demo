@@ -1,23 +1,23 @@
 use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting};
 use crate::aerobat::{count_landing_revolutions, evaluate_landing_type, LandingType};
-use crate::progression::components::WaypointPlatform;
+use crate::progression::components::RoundTargetPlatform;
 use crate::progression::resources::RoundId;
-use crate::progression::states::{LevelState, RoundState};
+use crate::progression::states::{GameState, LevelState, RoundState};
 use crate::score::events::BonusEvent;
 use crate::score::{CAP_FLIP_LAND_BONUS, FLIP_LAND_BONUS};
 use bevy::prelude::*;
 
 pub fn end_round(
-    waypoint_platform_query: Query<Entity, With<WaypointPlatform>>,
+    round_target_platform_query: Query<Entity, With<RoundTargetPlatform>>,
     mut next_round_state: ResMut<NextState<RoundState>>,
     aerobat_query: Query<(&Grounded, &FlipMeter, &Transform), (With<Aerobat>, Added<Resting>)>,
     mut bonus_event_writer: EventWriter<BonusEvent>,
     round_id: Res<RoundId>,
 ) {
     for (grounded, flip_meter, transform) in &aerobat_query {
-        let on_waypoint_platform = waypoint_platform_query
+        let on_target_platform = round_target_platform_query
             .iter()
-            .any(|waypoint| grounded.0 == Some(waypoint));
+            .any(|target_platform| grounded.0 == Some(target_platform));
 
         let landing_type = evaluate_landing_type(&transform.rotation);
         let landing_revolutions = count_landing_revolutions(&landing_type, flip_meter.0);
@@ -34,7 +34,7 @@ pub fn end_round(
             }
         }
 
-        if on_waypoint_platform {
+        if on_target_platform {
             next_round_state.set(RoundState::Finished);
         } else {
             next_round_state.set(RoundState::Unfinished);
@@ -67,4 +67,24 @@ pub fn restart_round(
 ) {
     round_id.0 += 1;
     next_round_state.set(RoundState::Start);
+}
+
+pub fn start_first_level(mut next_state: ResMut<NextState<LevelState>>) {
+    next_state.set(LevelState::First)
+}
+
+pub fn reset_round_state(mut next_state: ResMut<NextState<RoundState>>) {
+    next_state.set(RoundState::default());
+}
+
+pub fn reset_level_state(mut next_state: ResMut<NextState<LevelState>>) {
+    next_state.set(LevelState::default());
+}
+
+pub fn reset_round_id(mut round_id: ResMut<RoundId>) {
+    round_id.0 = 0;
+}
+
+pub fn restart_game(mut next_state: ResMut<NextState<GameState>>) {
+    next_state.set(GameState::InGame);
 }

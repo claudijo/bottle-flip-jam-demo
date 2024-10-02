@@ -36,4 +36,6 @@ pub enum GameState {
     #[default]
     MainMenu,
     InGame,
+    GameOptionsMenu,
+    Restarting,
 }

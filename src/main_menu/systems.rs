@@ -1,6 +1,6 @@
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::main_menu::components::{MainMenu, PlayButton};
-use crate::progression::states::{GameState, LevelState};
+use crate::progression::states::GameState;
 use bevy::prelude::*;
 
 pub fn spawn_main_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -67,14 +67,12 @@ pub fn despawn_main_menu(mut commands: Commands, main_menu_query: Query<Entity, 
 }
 
 pub fn handle_play_button_interactions(
-    interaction_query: Query<&Interaction, (Changed<Interaction>, With<Button>)>,
+    interaction_query: Query<&Interaction, (Changed<Interaction>, With<PlayButton>)>,
     mut next_game_state: ResMut<NextState<GameState>>,
-    mut next_progression_wave_state: ResMut<NextState<LevelState>>,
 ) {
     for interaction in &interaction_query {
         if *interaction == Interaction::Pressed {
             next_game_state.set(GameState::InGame);
-            next_progression_wave_state.set(LevelState::First);
         }
     }
 }

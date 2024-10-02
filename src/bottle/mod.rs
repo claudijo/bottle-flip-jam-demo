@@ -29,6 +29,9 @@ impl Plugin for BottlePlugin {
             despawn_bottle.run_if(in_state(GameState::InGame)),
         );
 
+        app.add_systems(OnEnter(GameState::MainMenu), despawn_bottle);
+        app.add_systems(OnEnter(GameState::Restarting), despawn_bottle);
+
         app.add_systems(
             Update,
             (adjust_angular_damping, adjust_linear_damping).run_if(in_state(GameState::InGame)),

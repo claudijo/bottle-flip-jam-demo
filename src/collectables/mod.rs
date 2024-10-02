@@ -38,6 +38,9 @@ impl Plugin for CollectablesPlugin {
             despawn_money.run_if(in_state(GameState::InGame)),
         );
 
+        app.add_systems(OnEnter(GameState::MainMenu), despawn_money);
+        app.add_systems(OnEnter(GameState::Restarting), despawn_money);
+
         app.add_systems(Update, collect_money.run_if(in_state(GameState::InGame)));
     }
 }

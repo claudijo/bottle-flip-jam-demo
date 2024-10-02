@@ -1,17 +1,17 @@
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::physics::CustomCollisionLayer;
-use crate::platforms::components::FanAnimationTimer;
-use crate::progression::components::WaypointPlatform;
+use crate::platforms::components::{FanAnimationTimer, GamePlatform};
+use crate::progression::components::RoundTargetPlatform;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 use std::time::Duration;
 
-pub fn remove_waypoint_marker(
+pub fn remove_round_target_platform_marker(
     mut commands: Commands,
-    waypoint_platform_query: Query<Entity, With<WaypointPlatform>>,
+    platform_query: Query<Entity, With<RoundTargetPlatform>>,
 ) {
-    for waypoint in &waypoint_platform_query {
-        commands.entity(waypoint).remove::<WaypointPlatform>();
+    for entity in &platform_query {
+        commands.entity(entity).remove::<RoundTargetPlatform>();
     }
 }
 
@@ -57,7 +57,8 @@ pub fn spawn_bench(mut commands: Commands, asset_server: Res<AssetServer>) {
                 CustomCollisionLayer::Platform,
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
-            WaypointPlatform,
+            GamePlatform,
+            RoundTargetPlatform,
             Name::new("Bench collider"),
         ))
         .with_children(|parent| {
@@ -86,7 +87,8 @@ pub fn spawn_cardboard_boxes(mut commands: Commands, asset_server: Res<AssetServ
                     CustomCollisionLayer::Platform,
                     [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
                 ),
-                WaypointPlatform,
+                GamePlatform,
+                RoundTargetPlatform,
             ))
             .with_children(|child_builder| {
                 child_builder.spawn(SpriteBundle {
@@ -122,7 +124,8 @@ pub fn spawn_fan(
                 CustomCollisionLayer::Platform,
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
-            WaypointPlatform,
+            GamePlatform,
+            RoundTargetPlatform,
         ))
         .with_children(|parent| {
             parent.spawn((
@@ -147,5 +150,14 @@ pub fn animate_fan(
         if fan_animation_timer.0.just_finished() {
             fan_atlas.index = (fan_atlas.index + 1) % 4;
         }
+    }
+}
+
+pub fn despawn_game_platforms(
+    mut commands: Commands,
+    platforms_query: Query<Entity, With<GamePlatform>>,
+) {
+    for entity in &platforms_query {
+        commands.entity(entity).despawn_recursive();
     }
 }

@@ -1,4 +1,4 @@
-use crate::level::systems::spawn_background;
+use crate::backgrounds::systems::spawn_background;
 use bevy::prelude::*;
 
 mod systems;

@@ -7,7 +7,8 @@ use crate::progression::states::GameState;
 use crate::score::events::{BonusEvent, ScoreEvent};
 use crate::score::resources::Score;
 use crate::score::systems::{
-    collect_bonus, collect_score, spawn_score_display, spawn_score_icon, update_score_display,
+    collect_bonus, collect_score, despawn_score_display, despawn_score_icon, reset_score,
+    spawn_score_display, spawn_score_icon, update_score_display,
 };
 use bevy::prelude::*;
 use std::collections::HashMap;
@@ -23,8 +24,17 @@ impl Plugin for ScorePlugin {
         app.add_event::<ScoreEvent>();
         app.add_event::<BonusEvent>();
         app.insert_resource(Score(HashMap::<u64, u32>::new()));
-        app.add_systems(OnEnter(GameState::InGame), spawn_score_display);
-        app.add_systems(OnEnter(GameState::InGame), spawn_score_icon);
+        app.add_systems(
+            OnEnter(GameState::InGame),
+            (spawn_score_display, spawn_score_icon),
+        );
+        app.add_systems(
+            OnEnter(GameState::MainMenu),
+            (despawn_score_display, despawn_score_icon),
+        );
+
+        app.add_systems(OnEnter(GameState::Restarting), reset_score);
+
         app.add_systems(
             Update,
             (collect_score, collect_bonus, update_score_display)

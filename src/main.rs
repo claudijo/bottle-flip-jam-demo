@@ -5,12 +5,13 @@
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
 
 mod aerobat;
+mod backgrounds;
 mod bottle;
 mod camera;
 mod collectables;
 pub mod config;
+mod game_options_menu;
 pub mod grabber;
-mod level;
 mod main_menu;
 mod physics;
 mod platforms;
@@ -19,11 +20,12 @@ mod score;
 mod soundtrack;
 
 use crate::aerobat::AerobatPlugin;
+use crate::backgrounds::LevelPlugin;
 use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
 use crate::collectables::CollectablesPlugin;
+use crate::game_options_menu::InGameMenuPlugin;
 use crate::grabber::GrabberPlugin;
-use crate::level::LevelPlugin;
 use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
@@ -60,6 +62,7 @@ fn main() {
         .add_plugins((
             CameraPlugin,
             MainMenuPlugin,
+            InGameMenuPlugin,
             LevelPlugin,
             PlatformsPlugin,
             BottlePlugin,

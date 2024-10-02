@@ -19,8 +19,11 @@ impl Plugin for GrabberPlugin {
         app.add_event::<Released>();
         app.insert_resource(Grabbing::default());
         app.insert_resource(GrabTouchId::default());
+
         app.add_systems(OnEnter(GameState::InGame), spawn_grab_anchor);
-        app.add_systems(OnExit(GameState::InGame), despawn_grab_anchor);
+        app.add_systems(OnEnter(GameState::MainMenu), despawn_grab_anchor);
+        app.add_systems(OnEnter(GameState::Restarting), despawn_grab_anchor);
+
         app.add_systems(
             Update,
             (

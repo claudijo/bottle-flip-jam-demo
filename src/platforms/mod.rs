@@ -1,6 +1,6 @@
 use crate::platforms::systems::{
-    animate_fan, remove_waypoint_marker, spawn_bench, spawn_cardboard_boxes, spawn_fan,
-    spawn_ground,
+    animate_fan, despawn_game_platforms, remove_round_target_platform_marker, spawn_bench,
+    spawn_cardboard_boxes, spawn_fan, spawn_ground,
 };
 
 use crate::progression::states::{GameState, LevelState, RoundState};
@@ -28,10 +28,13 @@ impl Plugin for PlatformsPlugin {
 
         app.add_systems(
             OnEnter(RoundState::Finished),
-            remove_waypoint_marker.run_if(in_state(GameState::InGame)),
+            remove_round_target_platform_marker.run_if(in_state(GameState::InGame)),
         );
 
         app.add_systems(Startup, spawn_ground);
         app.add_systems(Update, animate_fan.run_if(in_state(GameState::InGame)));
+
+        app.add_systems(OnEnter(GameState::MainMenu), despawn_game_platforms);
+        app.add_systems(OnEnter(GameState::Restarting), despawn_game_platforms);
     }
 }

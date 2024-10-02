@@ -1,4 +1,4 @@
-use crate::score::components::ScoreDisplay;
+use crate::score::components::{ScoreDisplay, ScoreIcon};
 use crate::score::events::{BonusEvent, ScoreEvent};
 use crate::score::resources::Score;
 use bevy::prelude::*;
@@ -31,6 +31,19 @@ pub fn spawn_score_display(
     ));
 }
 
+pub fn reset_score(mut score: ResMut<Score>) {
+    score.0 = HashMap::<u64, u32>::new();
+}
+
+pub fn despawn_score_display(
+    mut commands: Commands,
+    score_display_query: Query<Entity, With<ScoreDisplay>>,
+) {
+    for entity in &score_display_query {
+        commands.entity(entity).despawn_recursive();
+    }
+}
+
 pub fn spawn_score_icon(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
@@ -54,7 +67,17 @@ pub fn spawn_score_icon(
             ..default()
         },
         TextureAtlas::from(texture_atlas_handle),
+        ScoreIcon,
     ));
+}
+
+pub fn despawn_score_icon(
+    mut commands: Commands,
+    score_display_query: Query<Entity, With<ScoreIcon>>,
+) {
+    for entity in &score_display_query {
+        commands.entity(entity).despawn_recursive();
+    }
 }
 
 pub fn update_score_display(

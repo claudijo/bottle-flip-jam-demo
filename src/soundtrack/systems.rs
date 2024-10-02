@@ -55,6 +55,7 @@ pub fn change_tracks(
                     FadeIn,
                 ));
             }
+            _ => {}
         }
     }
 }
