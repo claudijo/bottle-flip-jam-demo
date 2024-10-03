@@ -1,10 +1,11 @@
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
 use crate::aerobat::systems::{
-    insert_flip_meter_on_release, track_flip_rotation, update_grounded, update_resting,
-    update_resting_time,
+    add_hit_detector, insert_flip_meter_on_release, track_flip_rotation, update_grounded,
+    update_resting, update_resting_time,
 };
 
-use crate::progression::states::GameState;
+use crate::bottle::systems::spawn_bottle;
+use crate::progression::states::{GameState, RoundState};
 use bevy::prelude::*;
 
 pub mod components;
@@ -32,6 +33,11 @@ impl Plugin for AerobatPlugin {
             (update_grounded, update_resting_time, update_resting)
                 .run_if(in_state(GameState::InGame)),
         );
+        app.add_systems(
+            OnEnter(RoundState::Start),
+            add_hit_detector.after(spawn_bottle),
+        );
+
         app.add_systems(
             Update,
             (insert_flip_meter_on_release, track_flip_rotation).run_if(in_state(GameState::InGame)),

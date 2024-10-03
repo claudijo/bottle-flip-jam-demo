@@ -1,8 +1,47 @@
 use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting, RestingTime};
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
+use crate::bottle::components::{Bottle, BottleContent, BottlePart};
+use crate::bottle::{BOTTLE_BODY_SIZE, BOTTLE_CAP_SIZE, BOTTLE_NECK_HEIGHT};
 use crate::grabber::events::Released;
 use avian2d::prelude::*;
 use bevy::prelude::*;
+
+pub fn add_hit_detector(
+    mut commands: Commands,
+    bottle_query: Query<Entity, With<Bottle>>,
+    bottle_parts_query: Query<Entity, With<BottlePart>>,
+    bottle_content_query: Query<Entity, With<BottleContent>>,
+) {
+    for bottle in &bottle_query {
+        let mut shape_caster_exclude_entities = vec![];
+        for bottle_part in &bottle_parts_query {
+            if bottle_part != bottle {
+                shape_caster_exclude_entities.push(bottle_part);
+            }
+        }
+        for bottle_content in &bottle_content_query {
+            shape_caster_exclude_entities.push(bottle_content);
+        }
+
+        // For detecting if bottle is grounded. See
+        // https://github.com/Jondolf/avian/blob/main/crates/avian2d/examples/dynamic_character_2d/plugin.rs
+        commands.entity(bottle).insert(
+            ShapeCaster::new(
+                Collider::rectangle(
+                    BOTTLE_BODY_SIZE.x,
+                    BOTTLE_BODY_SIZE.y + BOTTLE_NECK_HEIGHT + BOTTLE_CAP_SIZE.y / 2.,
+                ),
+                Vec2::Y * (BOTTLE_NECK_HEIGHT + BOTTLE_CAP_SIZE.y / 2.) / 2.,
+                0.,
+                Dir2::NEG_Y,
+            )
+            .with_query_filter(SpatialQueryFilter::from_excluded_entities(
+                shape_caster_exclude_entities,
+            ))
+            .with_max_time_of_impact(2.),
+        );
+    }
+}
 
 pub fn update_grounded(
     mut commands: Commands,
