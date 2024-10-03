@@ -1,6 +1,6 @@
 use crate::camera::components::FocusTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
-use crate::grabber::resources::Grabbing;
+use crate::free_hand_controller::resources::Grabbing;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 

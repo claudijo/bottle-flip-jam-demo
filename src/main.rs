@@ -11,7 +11,7 @@ mod camera;
 mod collectables;
 pub mod config;
 mod game_options_menu;
-pub mod grabber;
+pub mod free_hand_controller;
 mod main_menu;
 mod physics;
 mod platforms;
@@ -25,7 +25,7 @@ use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
 use crate::collectables::CollectablesPlugin;
 use crate::game_options_menu::InGameMenuPlugin;
-use crate::grabber::GrabberPlugin;
+use crate::free_hand_controller::FreeHandControllerPlugin;
 use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
@@ -66,7 +66,7 @@ fn main() {
             LevelPlugin,
             PlatformsPlugin,
             BottlePlugin,
-            GrabberPlugin,
+            FreeHandControllerPlugin,
             CollectablesPlugin,
             AerobatPlugin,
             ProgressionPlugin,

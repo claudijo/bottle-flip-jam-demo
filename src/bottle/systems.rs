@@ -7,8 +7,8 @@ use crate::bottle::{
 };
 use crate::camera::components::FocusTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
-use crate::grabber::components::{GrabTarget, GrabZone};
-use crate::grabber::resources::Grabbing;
+use crate::free_hand_controller::components::{GrabTarget, GrabZone};
+use crate::free_hand_controller::resources::Grabbing;
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;

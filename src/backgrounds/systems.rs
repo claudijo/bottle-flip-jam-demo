@@ -1,4 +1,3 @@
-use crate::config::ASSETS_SCALE_FACTOR;
 use bevy::prelude::*;
 
 pub fn spawn_background(mut commands: Commands, asset_server: Res<AssetServer>) {

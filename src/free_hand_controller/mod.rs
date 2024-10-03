@@ -1,6 +1,6 @@
-use crate::grabber::events::Released;
-use crate::grabber::resources::{GrabTouchId, Grabbing};
-use crate::grabber::systems::{
+use crate::free_hand_controller::events::Released;
+use crate::free_hand_controller::resources::{GrabTouchId, Grabbing};
+use crate::free_hand_controller::systems::{
     despawn_grab_anchor, drag_using_mouse, drag_using_touch, grab_using_mouse, grab_using_touch,
     release_using_mouse, release_using_touch, spawn_grab_anchor,
 };
@@ -12,9 +12,9 @@ pub mod events;
 pub mod resources;
 mod systems;
 
-pub struct GrabberPlugin;
+pub struct FreeHandControllerPlugin;
 
-impl Plugin for GrabberPlugin {
+impl Plugin for FreeHandControllerPlugin {
     fn build(&self, app: &mut App) {
         app.add_event::<Released>();
         app.insert_resource(Grabbing::default());

@@ -2,7 +2,7 @@ use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting, RestingT
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
 use crate::bottle::components::{Bottle, BottleContent, BottlePart};
 use crate::bottle::{BOTTLE_BODY_SIZE, BOTTLE_CAP_SIZE, BOTTLE_NECK_HEIGHT};
-use crate::grabber::events::Released;
+use crate::free_hand_controller::events::Released;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 

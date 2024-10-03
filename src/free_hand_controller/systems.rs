@@ -1,6 +1,6 @@
-use crate::grabber::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
-use crate::grabber::events::Released;
-use crate::grabber::resources::{GrabTouchId, Grabbing};
+use crate::free_hand_controller::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
+use crate::free_hand_controller::events::Released;
+use crate::free_hand_controller::resources::{GrabTouchId, Grabbing};
 use avian2d::prelude::*;
 use bevy::input::touch::TouchPhase;
 use bevy::prelude::*;

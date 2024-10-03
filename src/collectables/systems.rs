@@ -1,7 +1,7 @@
 use crate::bottle::components::BottlePart;
 use crate::collectables::components::Money;
 use crate::config::ASSETS_SCALE_FACTOR;
-use crate::grabber::resources::Grabbing;
+use crate::free_hand_controller::resources::Grabbing;
 use crate::progression::resources::RoundId;
 use crate::score::events::ScoreEvent;
 use crate::score::COLLECT_MONEY_SCORE;
