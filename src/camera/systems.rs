@@ -4,7 +4,7 @@ use crate::free_hand_controller::resources::Grabbing;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
-const CLOSEUP_CAMERA_SCALE: f32 = 0.75;
+const CLOSEUP_CAMERA_SCALE: f32 = 0.6;
 const NORMAL_CAMERA_SCALE: f32 = 1.;
 
 const ZOOM_IN_SPEED: f32 = 4.;

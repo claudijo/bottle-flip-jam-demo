@@ -57,7 +57,7 @@ fn main() {
                 }),
         )
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
-        .insert_resource(Gravity(Vec2::NEG_Y * 2000.0))
+        .insert_resource(Gravity(Vec2::NEG_Y * 1500.0))
         // .add_plugins(PhysicsDebugPlugin::default())
         .add_plugins((
             CameraPlugin,
