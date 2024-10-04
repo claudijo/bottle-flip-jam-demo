@@ -38,7 +38,7 @@ pub fn add_hit_detector(
             .with_query_filter(SpatialQueryFilter::from_excluded_entities(
                 shape_caster_exclude_entities,
             ))
-            .with_max_time_of_impact(2.),
+            .with_max_time_of_impact(0.),
         );
     }
 }
@@ -50,11 +50,11 @@ pub fn update_grounded(
     for (entity, hits, rotation) in &aerobat_query {
         let mut hit_entity = None;
         let is_grounded = hits.iter().any(|hit| {
-            let grounded = (rotation * -hit.normal2).angle_between(Vec2::Y).abs() <= 0.01;
-            if grounded {
+            let upright_or_on_side = (rotation * -hit.normal2).angle_between(Vec2::Y).abs() <= 0.01;
+            if upright_or_on_side {
                 hit_entity = Some(hit.entity);
             }
-            grounded
+            true
         });
 
         if is_grounded {

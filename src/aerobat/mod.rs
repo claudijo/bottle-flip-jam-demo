@@ -4,7 +4,7 @@ use crate::aerobat::systems::{
     update_resting, update_resting_time,
 };
 
-use crate::bottle::systems::spawn_bottle;
+use crate::bottle::systems::{ spawn_bottle_content};
 use crate::progression::states::{GameState, RoundState};
 use bevy::prelude::*;
 
@@ -35,7 +35,7 @@ impl Plugin for AerobatPlugin {
         );
         app.add_systems(
             OnEnter(RoundState::Start),
-            add_hit_detector.after(spawn_bottle),
+            add_hit_detector.after(spawn_bottle_content),
         );
 
         app.add_systems(

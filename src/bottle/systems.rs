@@ -14,12 +14,6 @@ use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
 use bevy::core::Name;
 use bevy::prelude::*;
-// pub const BOTTLE_BODY_SIZE: Vec2 = Vec2::new(8. * ASSETS_SCALE_FACTOR, 15. * ASSETS_SCALE_FACTOR);
-// pub const BOTTLE_NECK_HEIGHT: f32 = 3. * ASSETS_SCALE_FACTOR;
-// pub const BOTTLE_CAP_SIZE: Vec2 = Vec2::new(4. * ASSETS_SCALE_FACTOR, 2. * ASSETS_SCALE_FACTOR);
-// pub const BOTTLE_DENSITY: f32 = 0.1;
-// pub const CONTENT_RADIUS: f32 = 3. * ASSETS_SCALE_FACTOR;
-// pub const CONTENT_DENSITY: f32 = 1.;
 
 pub fn set_spawn_point_1(mut spawn_point: ResMut<SpawnPoint>) {
     spawn_point.0 = Vec3::new(-90. * ASSETS_SCALE_FACTOR, -12. * ASSETS_SCALE_FACTOR, 10.);
