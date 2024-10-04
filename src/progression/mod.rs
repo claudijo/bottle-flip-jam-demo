@@ -18,9 +18,25 @@ impl Plugin for ProgressionPlugin {
         app.insert_state(RoundState::default());
         app.insert_state(LevelState::default());
         app.insert_state(GameState::default());
+
         app.insert_resource(RoundId(0));
-        app.add_systems(OnEnter(GameState::InGame), start_first_round);
-        app.add_systems(OnEnter(GameState::InGame), start_first_level);
+
+        app.add_systems(
+            OnTransition {
+                exited: GameState::MainMenu,
+                entered: GameState::InGame,
+            },
+            (start_first_round, start_first_level),
+        );
+
+        app.add_systems(
+            OnTransition {
+                exited: GameState::Restarting,
+                entered: GameState::InGame,
+            },
+            (start_first_round, start_first_level),
+        );
+
         app.add_systems(OnEnter(RoundState::Finished), start_next_round);
         app.add_systems(OnEnter(RoundState::Unfinished), restart_round);
 

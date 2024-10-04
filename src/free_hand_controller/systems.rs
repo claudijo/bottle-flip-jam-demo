@@ -56,7 +56,10 @@ pub fn spawn_grab_anchor(mut commands: Commands) {
     ));
 }
 
-pub fn despawn_grab_anchor(mut commands: Commands, grab_anchor_query: Query<Entity, With<GrabAnchor>>) {
+pub fn despawn_grab_anchor(
+    mut commands: Commands,
+    grab_anchor_query: Query<Entity, With<GrabAnchor>>,
+) {
     for grab_anchor in &grab_anchor_query {
         commands.entity(grab_anchor).despawn();
     }

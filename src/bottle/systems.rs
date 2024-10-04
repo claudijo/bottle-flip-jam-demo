@@ -177,7 +177,6 @@ pub fn despawn_bottle_content(
     }
 }
 
-
 pub fn adjust_angular_damping(
     mut bottle_query: Query<(&AngularVelocity, &mut AngularDamping), With<Bottle>>,
 ) {

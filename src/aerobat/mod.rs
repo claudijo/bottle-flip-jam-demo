@@ -4,7 +4,7 @@ use crate::aerobat::systems::{
     update_resting, update_resting_time,
 };
 
-use crate::bottle::systems::{ spawn_bottle_content};
+use crate::bottle::systems::spawn_bottle_content;
 use crate::progression::states::{GameState, RoundState};
 use bevy::prelude::*;
 

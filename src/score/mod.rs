@@ -24,10 +24,15 @@ impl Plugin for ScorePlugin {
         app.add_event::<ScoreEvent>();
         app.add_event::<BonusEvent>();
         app.insert_resource(Score(HashMap::<u64, u32>::new()));
+
         app.add_systems(
-            OnEnter(GameState::InGame),
+            OnTransition {
+                exited: GameState::MainMenu,
+                entered: GameState::InGame,
+            },
             (spawn_score_display, spawn_score_icon),
         );
+
         app.add_systems(
             OnEnter(GameState::MainMenu),
             (despawn_score_display, despawn_score_icon),
