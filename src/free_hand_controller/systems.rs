@@ -1,3 +1,4 @@
+use crate::camera::utils::world_from_viewport;
 use crate::free_hand_controller::components::{GrabAnchor, GrabJoint, GrabTarget, GrabZone};
 use crate::free_hand_controller::events::Released;
 use crate::free_hand_controller::resources::{GrabTouchId, Grabbing};
@@ -7,17 +8,6 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 const TOUCH_ANCHOR_OFFSET: f32 = 16.;
-
-fn world_from_viewport(
-    camera: &Camera,
-    camera_transform: &GlobalTransform,
-    position: Option<Vec2>,
-) -> Option<Vec2> {
-    let viewport_position = position?;
-
-    // Calculate a world position based on the cursor's position.
-    camera.viewport_to_world_2d(camera_transform, viewport_position)
-}
 
 fn try_grab_target(
     commands: &mut Commands,

@@ -1,4 +1,4 @@
-use crate::aerobat::components::Grounded;
+use crate::bottle::components::Bottle;
 use crate::camera::utils::world_from_viewport;
 use crate::level_editor::components::Movable;
 use avian2d::collision::Collider;
@@ -54,12 +54,9 @@ pub fn pan_camera_with_mouse_wheel(
 ) {
     for ev in evr_scroll.read() {
         for mut camera_transform in &mut camera_query {
-            match ev.unit {
-                MouseScrollUnit::Pixel => {
-                    camera_transform.translation.y += ev.y;
-                    camera_transform.translation.x -= ev.x;
-                }
-                _ => {}
+            if ev.unit == MouseScrollUnit::Pixel {
+                camera_transform.translation.y += ev.y;
+                camera_transform.translation.x -= ev.x;
             }
         }
     }
@@ -70,7 +67,7 @@ pub fn pick_editable(
     camera_query: Query<(&Camera, &GlobalTransform)>,
     windows: Query<&Window, With<PrimaryWindow>>,
     movable_query: Query<Entity, With<Movable>>,
-    collider_query: Query<(Entity, &Transform, &Collider, Option<&Name>)>,
+    collider_query: Query<(Entity, &Transform, &Collider, Option<&Name>), With<Bottle>>,
     buttons: Res<ButtonInput<MouseButton>>,
 ) {
     if buttons.just_pressed(MouseButton::Left) {

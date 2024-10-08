@@ -1,6 +1,5 @@
 use crate::bottle::components::BottlePart;
 use crate::collectables::components::Money;
-use crate::config::ASSETS_SCALE_FACTOR;
 use crate::free_hand_controller::resources::Grabbing;
 use crate::progression::resources::RoundId;
 use crate::score::events::ScoreEvent;
@@ -50,26 +49,11 @@ pub fn spawn_money_trail_1(
     texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
 ) {
     let configs = vec![
-        (
-            Vec3::new(-80. * ASSETS_SCALE_FACTOR, 5. * ASSETS_SCALE_FACTOR, 3.),
-            1,
-        ),
-        (
-            Vec3::new(-75. * ASSETS_SCALE_FACTOR, 22.5 * ASSETS_SCALE_FACTOR, 3.),
-            0,
-        ),
-        (
-            Vec3::new(-60. * ASSETS_SCALE_FACTOR, 35. * ASSETS_SCALE_FACTOR, 3.),
-            5,
-        ),
-        (
-            Vec3::new(-45. * ASSETS_SCALE_FACTOR, 17.5 * ASSETS_SCALE_FACTOR, 3.),
-            3,
-        ),
-        (
-            Vec3::new(-37.5 * ASSETS_SCALE_FACTOR, -5. * ASSETS_SCALE_FACTOR, 3.),
-            2,
-        ),
+        (Vec3::new(-222., -686.5, 3.), 1),
+        (Vec3::new(-196.5, -634.5, 3.), 0),
+        (Vec3::new(-145., -604.5, 3.), 5),
+        (Vec3::new(-94.5, -643.5, 3.), 3),
+        (Vec3::new(-67.5, -693.0, 3.), 2),
     ];
 
     spawn_money_trail(commands, asset_server, texture_atlases, configs);
@@ -81,26 +65,11 @@ pub fn spawn_money_trail_2(
     texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
 ) {
     let configs = vec![
-        (
-            Vec3::new(-15. * ASSETS_SCALE_FACTOR, 10. * ASSETS_SCALE_FACTOR, 3.),
-            1,
-        ),
-        (
-            Vec3::new(0. * ASSETS_SCALE_FACTOR, 30. * ASSETS_SCALE_FACTOR, 3.),
-            0,
-        ),
-        (
-            Vec3::new(20. * ASSETS_SCALE_FACTOR, 42.5 * ASSETS_SCALE_FACTOR, 3.),
-            5,
-        ),
-        (
-            Vec3::new(40. * ASSETS_SCALE_FACTOR, 35. * ASSETS_SCALE_FACTOR, 3.),
-            3,
-        ),
-        (
-            Vec3::new(50. * ASSETS_SCALE_FACTOR, 20. * ASSETS_SCALE_FACTOR, 3.),
-            2,
-        ),
+        (Vec3::new(-25.5, -642., 3.), 1),
+        (Vec3::new(3., -576., 3.), 0),
+        (Vec3::new(61.5, -535.5, 3.), 5),
+        (Vec3::new(126., -555., 3.), 3),
+        (Vec3::new(166.5, -604.5, 3.), 2),
     ];
 
     spawn_money_trail(commands, asset_server, texture_atlases, configs);
@@ -112,26 +81,235 @@ pub fn spawn_money_trail_3(
     texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
 ) {
     let configs = vec![
-        (
-            Vec3::new(65. * ASSETS_SCALE_FACTOR, 42.5 * ASSETS_SCALE_FACTOR, 3.),
-            1,
-        ),
-        (
-            Vec3::new(75. * ASSETS_SCALE_FACTOR, 62.5 * ASSETS_SCALE_FACTOR, 3.),
-            0,
-        ),
-        (
-            Vec3::new(90. * ASSETS_SCALE_FACTOR, 75. * ASSETS_SCALE_FACTOR, 3.),
-            5,
-        ),
-        (
-            Vec3::new(105. * ASSETS_SCALE_FACTOR, 65. * ASSETS_SCALE_FACTOR, 3.),
-            3,
-        ),
-        (
-            Vec3::new(112.5 * ASSETS_SCALE_FACTOR, 50. * ASSETS_SCALE_FACTOR, 3.),
-            2,
-        ),
+        (Vec3::new(198., -559.5, 3.), 1),
+        (Vec3::new(222., -508.5, 3.), 0),
+        (Vec3::new(264., -474., 3.), 5),
+        (Vec3::new(309., -495., 3.), 3),
+        (Vec3::new(336., -534., 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_4(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(174., -439.5, 3.), 1),
+        (Vec3::new(201., -399.0, 3.), 0),
+        (Vec3::new(247.5, -379.5, 3.), 5),
+        (Vec3::new(286.5, -432., 3.), 3),
+        (Vec3::new(309., -489., 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_5(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-27., -345., 3.), 1),
+        (Vec3::new(9., -304.5, 3.), 0),
+        (Vec3::new(61.5, -285.0, 3.), 5),
+        (Vec3::new(117., -324., 3.), 3),
+        (Vec3::new(150., -388.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_6(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-235.5, -345., 3.), 1),
+        (Vec3::new(-210., -294., 3.), 0),
+        (Vec3::new(-156., -258.0, 3.), 5),
+        (Vec3::new(-99., -277.5, 3.), 3),
+        (Vec3::new(-64.5, -324., 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_7(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-425.5, -345., 3.), 1),
+        (Vec3::new(-400., -294., 3.), 0),
+        (Vec3::new(-346., -258.0, 3.), 5),
+        (Vec3::new(-289., -277.5, 3.), 3),
+        (Vec3::new(-254.5, -324., 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_8(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-427., -316.5, 3.), 1),
+        (Vec3::new(-418., -252., 3.), 1),
+        (Vec3::new(-395.5, -193.5, 3.), 0),
+        (Vec3::new(-346., -201., 3.), 3),
+        (Vec3::new(-329.5, -250.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_9(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-326.5, -231., 3.), 1),
+        (Vec3::new(-301., -181.5, 3.), 0),
+        (Vec3::new(-241., -157.5, 3.), 5),
+        (Vec3::new(-190., -192., 3.), 3),
+        (Vec3::new(-154.5, -238.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_10(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-350.5, -150., 3.), 1),
+        (Vec3::new(-320.5, -100.5, 3.), 0),
+        (Vec3::new(-253., -75., 3.), 5),
+        (Vec3::new(-190., -127.5, 3.), 3),
+        (Vec3::new(-157.5, -196.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_11(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-608.5, -40.5, 3.), 1),
+        (Vec3::new(-566.5, 3., 3.), 0),
+        (Vec3::new(-500.5, 21., 3.), 5),
+        (Vec3::new(-431.5, -33., 3.), 3),
+        (Vec3::new(-394.5, -108.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_12(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-602.5, -19.5, 3.), 1),
+        (Vec3::new(-575.5, 45., 3.), 0),
+        (Vec3::new(-526.5, 93., 3.), 5),
+        (Vec3::new(-469.0, 78., 3.), 3),
+        (Vec3::new(-433.5, 35.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_13(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-410.5, 66., 3.), 1),
+        (Vec3::new(-380.5, 114., 3.), 0),
+        (Vec3::new(-319.5, 136.5, 3.), 5),
+        (Vec3::new(-268., 99., 3.), 3),
+        (Vec3::new(-243., 47.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_14(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-220., 66., 3.), 1),
+        (Vec3::new(-190., 114., 3.), 0),
+        (Vec3::new(-129., 136.5, 3.), 5),
+        (Vec3::new(-77.5, 99., 3.), 3),
+        (Vec3::new(-52.5, 47.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_15(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(-31., 67.5, 3.), 1),
+        (Vec3::new(12.5, 132., 3.), 0),
+        (Vec3::new(94.5, 168., 3.), 5),
+        (Vec3::new(179., 120., 3.), 3),
+        (Vec3::new(222., 47.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_16(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(246.5, 72., 3.), 1),
+        (Vec3::new(276.5, 153., 3.), 0),
+        (Vec3::new(328.5, 216., 3.), 5),
+        (Vec3::new(393.5, 196.5, 3.), 3),
+        (Vec3::new(426., 146.5, 3.), 2),
+    ];
+
+    spawn_money_trail(commands, asset_server, texture_atlases, configs);
+}
+
+pub fn spawn_money_trail_17(
+    commands: Commands,
+    asset_server: Res<AssetServer>,
+    texture_atlases: ResMut<Assets<TextureAtlasLayout>>,
+) {
+    let configs = vec![
+        (Vec3::new(446., 151.5, 3.), 1),
+        (Vec3::new(477.5, 208.5, 3.), 0),
+        (Vec3::new(537., 255., 3.), 5),
+        (Vec3::new(609.5, 225., 3.), 3),
+        (Vec3::new(654., 164.5, 3.), 2),
     ];
 
     spawn_money_trail(commands, asset_server, texture_atlases, configs);

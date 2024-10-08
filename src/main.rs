@@ -5,13 +5,14 @@
 #![allow(clippy::too_many_arguments, clippy::type_complexity)]
 
 mod aerobat;
-mod backgrounds;
 mod bottle;
 mod camera;
 mod collectables;
 pub mod config;
 pub mod free_hand_controller;
 mod game_options_menu;
+mod level_editor;
+mod levels;
 mod main_menu;
 mod physics;
 mod platforms;
@@ -20,12 +21,12 @@ mod score;
 mod soundtrack;
 
 use crate::aerobat::AerobatPlugin;
-use crate::backgrounds::LevelPlugin;
 use crate::bottle::BottlePlugin;
 use crate::camera::CameraPlugin;
 use crate::collectables::CollectablesPlugin;
 use crate::free_hand_controller::FreeHandControllerPlugin;
 use crate::game_options_menu::InGameMenuPlugin;
+use crate::levels::LevelsPlugin;
 use crate::main_menu::MainMenuPlugin;
 use crate::platforms::PlatformsPlugin;
 use crate::progression::ProgressionPlugin;
@@ -49,7 +50,7 @@ fn main() {
                 .set(ImagePlugin::default_nearest())
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        title: "Bottle Flip Jam [Demo]".into(),
+                        title: "Bottle Flip Jam ᗪ乇爪ㄖ".into(),
                         resolution: WindowResolution::new(640., 360.),
                         ..default()
                     }),
@@ -59,11 +60,12 @@ fn main() {
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
         .insert_resource(Gravity(Vec2::NEG_Y * 1500.0))
         // .add_plugins(PhysicsDebugPlugin::default())
+        //.add_plugins(LevelEditorPlugin)
         .add_plugins((
             CameraPlugin,
             MainMenuPlugin,
             InGameMenuPlugin,
-            LevelPlugin,
+            LevelsPlugin,
             PlatformsPlugin,
             BottlePlugin,
             FreeHandControllerPlugin,
@@ -73,6 +75,6 @@ fn main() {
             ScorePlugin,
             // SoundTrackPlugin,
         ))
-        .insert_resource(ClearColor(Color::srgb(50. / 255., 25. / 255., 51. / 255.)))
+        .insert_resource(ClearColor(Color::srgb(56. / 255., 0. / 255., 44. / 255.)))
         .run();
 }

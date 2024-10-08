@@ -1,4 +1,7 @@
-use crate::levels::systems::{spawn_buildings, spawn_ground, spawn_night_sky, spawn_skyline_far, spawn_skyline_near, spawn_skyline_partway};
+use crate::levels::systems::{
+    spawn_buildings, spawn_ground, spawn_night_sky, spawn_skyline_far, spawn_skyline_near,
+    spawn_skyline_partway,
+};
 use bevy::prelude::*;
 
 mod systems;
@@ -15,7 +18,7 @@ impl Plugin for LevelsPlugin {
                 spawn_skyline_far,
                 spawn_skyline_partway,
                 spawn_skyline_near,
-                spawn_night_sky
+                spawn_night_sky,
             ),
         );
     }

@@ -2,7 +2,6 @@ use crate::camera::components::FocusTarget;
 use crate::free_hand_controller::resources::Grabbing;
 use bevy::core_pipeline::bloom::BloomSettings;
 use bevy::core_pipeline::tonemapping::Tonemapping;
-use bevy::input::mouse::{MouseScrollUnit, MouseWheel};
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
