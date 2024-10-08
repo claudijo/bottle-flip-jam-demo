@@ -1,6 +1,8 @@
 use crate::camera::components::FocusTarget;
-use crate::config::ASSETS_SCALE_FACTOR;
 use crate::free_hand_controller::resources::Grabbing;
+use bevy::core_pipeline::bloom::BloomSettings;
+use bevy::core_pipeline::tonemapping::Tonemapping;
+use bevy::input::mouse::{MouseScrollUnit, MouseWheel};
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
@@ -11,21 +13,34 @@ const ZOOM_IN_SPEED: f32 = 4.;
 const ZOOM_OUT_SPEED: f32 = 2.;
 
 pub fn spawn_camera(mut commands: Commands) {
-    commands.spawn(Camera2dBundle {
-        transform: Transform::from_xyz(20. * ASSETS_SCALE_FACTOR, 20. * ASSETS_SCALE_FACTOR, 0.),
-
-        projection: OrthographicProjection {
-            far: 1000.,
-            near: -1000.,
-            scaling_mode: ScalingMode::AutoMin {
-                min_width: 640.,
-                min_height: 340.,
+    commands.spawn((
+        Camera2dBundle {
+            // HDR is required for bloom
+            camera: Camera {
+                hdr: true,
+                ..default()
             },
-            scale: NORMAL_CAMERA_SCALE,
+
+            // For bloom, using a tonemapper that desaturates to white is recommended
+            tonemapping: Tonemapping::TonyMcMapface,
+
+            transform: Transform::from_xyz(0., 0., 0.),
+
+            projection: OrthographicProjection {
+                far: 1000.,
+                near: -1000.,
+                scaling_mode: ScalingMode::AutoMin {
+                    min_width: 640.,
+                    min_height: 340.,
+                },
+                scale: NORMAL_CAMERA_SCALE,
+                ..default()
+            },
             ..default()
         },
-        ..default()
-    });
+        // Enable bloom for the camera
+        BloomSettings::default(),
+    ));
 }
 
 pub fn aim_camera(
@@ -39,8 +54,7 @@ pub fn aim_camera(
     }
 
     for target_transform in &target_query {
-        let target_translation =
-            target_transform.translation() + Vec3::Y * ASSETS_SCALE_FACTOR * 20.;
+        let target_translation = target_transform.translation() + Vec3::Y * 60.;
         for mut camera_transform in &mut camera_query {
             camera_transform.translation = camera_transform
                 .translation
