@@ -58,9 +58,16 @@ fn main() {
                 }),
         )
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
-        .insert_resource(Gravity(Vec2::NEG_Y * 1500.0))
         // .add_plugins(PhysicsDebugPlugin::default())
         //.add_plugins(LevelEditorPlugin)
+        // .add_plugins((
+        //     // Adds frame time diagnostics
+        //     FrameTimeDiagnosticsPlugin,
+        //     // Adds a system that prints diagnostics to the console
+        //     LogDiagnosticsPlugin::default(),
+        //     EntityCountDiagnosticsPlugin::default(),
+        //     SystemInformationDiagnosticsPlugin::default(),
+        // ))
         .add_plugins((
             CameraPlugin,
             MainMenuPlugin,

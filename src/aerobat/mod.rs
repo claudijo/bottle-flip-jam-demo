@@ -1,8 +1,6 @@
+use avian2d::prelude::Gravity;
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
-use crate::aerobat::systems::{
-    add_hit_detector, insert_flip_meter_on_release, track_flip_rotation, update_grounded,
-    update_resting, update_resting_time,
-};
+use crate::aerobat::systems::{add_hit_detector, adjust_gravity, insert_flip_meter_on_release, track_flip_rotation, update_grounded, update_resting, update_resting_time};
 
 use crate::bottle::systems::spawn_bottle_content;
 use crate::progression::states::{GameState, RoundState};
@@ -19,10 +17,17 @@ pub enum LandingType {
     Side,
 }
 
+pub const INCREASED_GRAVITY: f32 = 2400.;
+pub const NORMAL_GRAVITY: f32 = 1600.;
+
 pub struct AerobatPlugin;
 
 impl Plugin for AerobatPlugin {
     fn build(&self, app: &mut App) {
+        app.insert_resource(Gravity(Vec2::NEG_Y * NORMAL_GRAVITY));
+
+        app.add_systems(Update, adjust_gravity.run_if(in_state(GameState::InGame)));
+
         app.insert_resource(RestingThreshold {
             linear: 30.,
             angular: 0.2,

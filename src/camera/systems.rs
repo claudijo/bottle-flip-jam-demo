@@ -1,7 +1,5 @@
 use crate::camera::components::FocusTarget;
 use crate::free_hand_controller::resources::Grabbing;
-use bevy::core_pipeline::bloom::BloomSettings;
-use bevy::core_pipeline::tonemapping::Tonemapping;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
 
@@ -15,13 +13,13 @@ pub fn spawn_camera(mut commands: Commands) {
     commands.spawn((
         Camera2dBundle {
             // HDR is required for bloom
-            camera: Camera {
-                hdr: true,
-                ..default()
-            },
+            // camera: Camera {
+            //     hdr: true,
+            //     ..default()
+            // },
 
             // For bloom, using a tonemapper that desaturates to white is recommended
-            tonemapping: Tonemapping::TonyMcMapface,
+            // tonemapping: Tonemapping::TonyMcMapface,
 
             transform: Transform::from_xyz(0., 0., 0.),
 
@@ -38,7 +36,7 @@ pub fn spawn_camera(mut commands: Commands) {
             ..default()
         },
         // Enable bloom for the camera
-        BloomSettings::default(),
+        // BloomSettings::default(),
     ));
 }
 
