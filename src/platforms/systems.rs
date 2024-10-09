@@ -256,16 +256,19 @@ pub fn spawn_awning_1(mut commands: Commands, asset_server: Res<AssetServer>) {
 }
 
 pub fn spawn_thin_ledge(mut commands: Commands, asset_server: Res<AssetServer>) {
-    spawn_platform(
+    let platform = spawn_platform(
         &mut commands,
         &asset_server,
         PlatformTemplate::new(
-            Vec3::new(-240., -207., 2.),
-            Vec2::new(160. * 3., 8. * 3.),
+            Vec3::new(-240., -201., 2.),
+            Vec2::new(480., 12.),
             "images/thin_ledge.png".to_string(),
         )
+        .with_sprite_offset(Vec3::new(0., -6., 0.))
         .with_name("Thin ledge".to_string()),
     );
+
+    commands.entity(platform).insert(PassFromBelow);
 }
 
 pub fn spawn_vertical_neon_sign(mut commands: Commands, asset_server: Res<AssetServer>) {

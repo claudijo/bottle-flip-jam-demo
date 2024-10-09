@@ -15,75 +15,75 @@ use bevy::core::Name;
 use bevy::prelude::*;
 
 pub fn set_spawn_point_1(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-246., -717., 10.);
+    spawn_point.0 = Vec3::new(-246., -717. - 9., 10.);
 }
 
 pub fn set_spawn_point_2(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-66., -685., 10.);
+    spawn_point.0 = Vec3::new(-66., -685. - 9., 10.);
 }
 
 pub fn set_spawn_point_3(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(171., -590., 10.);
+    spawn_point.0 = Vec3::new(171., -590. - 9., 10.);
 }
 
 pub fn set_spawn_point_4(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(334.5, -525., 10.);
+    spawn_point.0 = Vec3::new(334.5, -525. - 9., 10.);
 }
 
 pub fn set_spawn_point_5(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(169.5, -429., 10.);
+    spawn_point.0 = Vec3::new(169.5, -429. - 9., 10.);
 }
 
 pub fn set_spawn_point_6(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-48., -331.5, 10.);
+    spawn_point.0 = Vec3::new(-48., -331.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_7(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-238.5, -331.5, 10.);
+    spawn_point.0 = Vec3::new(-238.5, -331.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_8(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-432., -331.5, 10.);
+    spawn_point.0 = Vec3::new(-432., -331.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_9(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-336., -237., 10.);
+    spawn_point.0 = Vec3::new(-336., -237. - 9., 10.);
 }
 
 pub fn set_spawn_point_10(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-144., -237., 10.);
+    spawn_point.0 = Vec3::new(-144., -237. - 9., 10.);
 }
 
 pub fn set_spawn_point_11(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-363., -144., 10.);
+    spawn_point.0 = Vec3::new(-363., -144. - 9., 10.);
 }
 
 pub fn set_spawn_point_12(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-624., -45., 10.);
+    spawn_point.0 = Vec3::new(-624., -45. - 9., 10.);
 }
 
 pub fn set_spawn_point_13(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-432., 52.5, 10.);
+    spawn_point.0 = Vec3::new(-432., 52.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_14(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-240., 52.5, 10.);
+    spawn_point.0 = Vec3::new(-240., 52.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_15(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(-48., 52.5, 10.);
+    spawn_point.0 = Vec3::new(-48., 52.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_16(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(225., 52.5, 10.);
+    spawn_point.0 = Vec3::new(225., 52.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_17(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(430.5, 148.5, 10.);
+    spawn_point.0 = Vec3::new(430.5, 148.5 - 9., 10.);
 }
 
 pub fn set_spawn_point_18(mut spawn_point: ResMut<SpawnPoint>) {
-    spawn_point.0 = Vec3::new(430.5, 148.5, 10.);
+    spawn_point.0 = Vec3::new(430.5, 148.5 - 9., 10.);
 }
 
 pub fn spawn_bottle(
