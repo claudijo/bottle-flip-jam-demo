@@ -1,3 +1,4 @@
+use crate::aerobat::components::PassFromBelow;
 use crate::physics::CustomCollisionLayer;
 use crate::platforms::components::{FanAnimationTimer, GamePlatform};
 use crate::platforms::PlatformTemplate;
@@ -172,16 +173,19 @@ pub fn spawn_cardboard_boxes(mut commands: Commands, asset_server: Res<AssetServ
 }
 
 pub fn spawn_ledge_1(mut commands: Commands, asset_server: Res<AssetServer>) {
-    spawn_platform(
+    let platform = spawn_platform(
         &mut commands,
         &asset_server,
         PlatformTemplate::new(
-            Vec3::new(288., -504., 2.),
-            Vec2::new(384., 45.),
+            Vec3::new(288., -486., 2.),
+            Vec2::new(384., 9.),
             "images/thick_ledge.png".to_string(),
         )
+        .with_sprite_offset(Vec3::new(0., -18., 0.))
         .with_name("Thick Ledge 1".to_string()),
     );
+
+    commands.entity(platform).insert(PassFromBelow);
 }
 
 pub fn spawn_vent_1(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -228,11 +232,12 @@ pub fn spawn_awning_2(mut commands: Commands, asset_server: Res<AssetServer>) {
         &mut commands,
         &asset_server,
         PlatformTemplate::new(
-            Vec3::new(-144., -312., 2.),
-            Vec2::new(96., 48.),
+            Vec3::new(-144., -297., 2.),
+            Vec2::new(96., 18.),
             "images/awning.png".to_string(),
         )
-        .with_name("Awning 1".to_string()),
+        .with_sprite_offset(Vec3::new(0., -15., 0.))
+        .with_name("Awning 2".to_string()),
     );
 }
 
@@ -241,11 +246,12 @@ pub fn spawn_awning_1(mut commands: Commands, asset_server: Res<AssetServer>) {
         &mut commands,
         &asset_server,
         PlatformTemplate::new(
-            Vec3::new(-336., -312., 2.),
-            Vec2::new(96., 48.),
+            Vec3::new(-336., -297., 2.),
+            Vec2::new(96., 18.),
             "images/awning.png".to_string(),
         )
-        .with_name("Awning 2".to_string()),
+        .with_sprite_offset(Vec3::new(0., -15., 0.))
+        .with_name("Awning 1".to_string()),
     );
 }
 
@@ -362,10 +368,11 @@ pub fn spawn_top_awning(mut commands: Commands, asset_server: Res<AssetServer>) 
         &mut commands,
         &asset_server,
         PlatformTemplate::new(
-            Vec3::new(432., 72., 2.),
-            Vec2::new(32. * 3., 16. * 3.),
+            Vec3::new(432., 87., 2.),
+            Vec2::new(96., 18.),
             "images/awning.png".to_string(),
         )
+        .with_sprite_offset(Vec3::new(0., -15., 0.))
         .with_name("Awning Top".to_string()),
     );
 }

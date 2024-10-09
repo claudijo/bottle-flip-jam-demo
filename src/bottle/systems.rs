@@ -8,7 +8,6 @@ use crate::bottle::{
 use crate::camera::components::FocusTarget;
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::free_hand_controller::components::{GrabTarget, GrabZone};
-use crate::free_hand_controller::resources::Grabbing;
 use crate::physics::CustomCollisionLayer;
 use avian2d::collision::{Collider, CollisionLayers};
 use avian2d::prelude::*;
@@ -246,17 +245,5 @@ pub fn adjust_linear_damping(
 ) {
     for (linear_velocity, mut linear_damping) in &mut bottle_query {
         linear_damping.0 = (linear_velocity.0.length() / 200.).powi(2);
-    }
-}
-
-pub fn filter_collisions_for_grabbed_bottle(
-    mut collisions: ResMut<Collisions>,
-    query: Query<(), With<BottlePart>>,
-    grabbing: Res<Grabbing>,
-) {
-    if grabbing.0 {
-        collisions.retain(|contacts| {
-            !query.contains(contacts.entity1) && !query.contains(contacts.entity2)
-        });
     }
 }

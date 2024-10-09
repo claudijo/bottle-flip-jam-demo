@@ -13,5 +13,7 @@ pub struct RestingTime(pub f32);
 pub struct Resting;
 
 #[derive(Component)]
-#[allow(dead_code)]
 pub struct FlipMeter(pub f32);
+
+#[derive(Component)]
+pub struct PassFromBelow;

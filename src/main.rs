@@ -22,7 +22,7 @@ mod soundtrack;
 
 use crate::aerobat::AerobatPlugin;
 use crate::bottle::BottlePlugin;
-use crate::camera::CameraPlugin;
+use crate::camera::{CameraPlugin, WINDOW_DEFAULT_SIZE};
 use crate::collectables::CollectablesPlugin;
 use crate::free_hand_controller::FreeHandControllerPlugin;
 use crate::game_options_menu::InGameMenuPlugin;
@@ -51,7 +51,10 @@ fn main() {
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Bottle Flip Jam ᗪ乇爪ㄖ".into(),
-                        resolution: WindowResolution::new(640., 360.),
+                        resolution: WindowResolution::new(
+                            WINDOW_DEFAULT_SIZE.x,
+                            WINDOW_DEFAULT_SIZE.y,
+                        ),
                         ..default()
                     }),
                     ..default()
@@ -59,7 +62,7 @@ fn main() {
         )
         .add_plugins(PhysicsPlugins::default().with_length_unit(100.0))
         // .add_plugins(PhysicsDebugPlugin::default())
-        //.add_plugins(LevelEditorPlugin)
+        // .add_plugins(LevelEditorPlugin)
         // .add_plugins((
         //     // Adds frame time diagnostics
         //     FrameTimeDiagnosticsPlugin,

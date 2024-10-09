@@ -1,9 +1,10 @@
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
 use crate::aerobat::systems::{
-    add_hit_detector, adjust_gravity, insert_flip_meter_on_release, track_flip_rotation,
+    add_hit_detector, adjust_gravity, filter_collision_for_pass_from_below_colliders,
+    filter_collisions_for_grabbed_bottle, insert_flip_meter_on_release, track_flip_rotation,
     update_grounded, update_resting, update_resting_time,
 };
-use avian2d::prelude::Gravity;
+use avian2d::prelude::{Gravity, PostProcessCollisions};
 
 use crate::bottle::systems::spawn_bottle_content;
 use crate::progression::states::{GameState, RoundState};
@@ -35,12 +36,15 @@ impl Plugin for AerobatPlugin {
             linear: 30.,
             angular: 0.2,
         });
+
         app.insert_resource(RestingActivationTime(0.4));
+
         app.add_systems(
             Update,
             (update_grounded, update_resting_time, update_resting)
                 .run_if(in_state(GameState::InGame)),
         );
+
         app.add_systems(
             OnEnter(RoundState::Start),
             add_hit_detector.after(spawn_bottle_content),
@@ -49,6 +53,17 @@ impl Plugin for AerobatPlugin {
         app.add_systems(
             Update,
             (insert_flip_meter_on_release, track_flip_rotation).run_if(in_state(GameState::InGame)),
+        );
+
+        // https://docs.rs/avian2d/latest/avian2d/schedule/struct.PostProcessCollisions.html#example
+        app.add_systems(
+            PostProcessCollisions,
+            (
+                filter_collisions_for_grabbed_bottle,
+                filter_collision_for_pass_from_below_colliders,
+            )
+                .chain()
+                .run_if(in_state(GameState::InGame)),
         );
     }
 }

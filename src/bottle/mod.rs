@@ -1,15 +1,14 @@
 use crate::bottle::resources::SpawnPoint;
 use crate::bottle::systems::{
     adjust_angular_damping, adjust_linear_damping, despawn_bottle, despawn_bottle_content,
-    filter_collisions_for_grabbed_bottle, set_spawn_point_1, set_spawn_point_10,
-    set_spawn_point_11, set_spawn_point_12, set_spawn_point_13, set_spawn_point_14,
-    set_spawn_point_15, set_spawn_point_16, set_spawn_point_17, set_spawn_point_18,
-    set_spawn_point_2, set_spawn_point_3, set_spawn_point_4, set_spawn_point_5, set_spawn_point_6,
-    set_spawn_point_7, set_spawn_point_8, set_spawn_point_9, spawn_bottle, spawn_bottle_content,
+    set_spawn_point_1, set_spawn_point_10, set_spawn_point_11, set_spawn_point_12,
+    set_spawn_point_13, set_spawn_point_14, set_spawn_point_15, set_spawn_point_16,
+    set_spawn_point_17, set_spawn_point_18, set_spawn_point_2, set_spawn_point_3,
+    set_spawn_point_4, set_spawn_point_5, set_spawn_point_6, set_spawn_point_7, set_spawn_point_8,
+    set_spawn_point_9, spawn_bottle, spawn_bottle_content,
 };
 use crate::config::ASSETS_SCALE_FACTOR;
 use crate::progression::states::{GameState, LevelState, RoundState};
-use avian2d::prelude::*;
 use bevy::prelude::*;
 
 pub mod systems;
@@ -54,12 +53,6 @@ impl Plugin for BottlePlugin {
         app.add_systems(
             Update,
             (adjust_angular_damping, adjust_linear_damping).run_if(in_state(GameState::InGame)),
-        );
-
-        // https://docs.rs/avian2d/latest/avian2d/schedule/struct.PostProcessCollisions.html#example
-        app.add_systems(
-            PostProcessCollisions,
-            filter_collisions_for_grabbed_bottle.run_if(in_state(GameState::InGame)),
         );
 
         app.add_systems(OnExit(LevelState::Initial), set_spawn_point_1);

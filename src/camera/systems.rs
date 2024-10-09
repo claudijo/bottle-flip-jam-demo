@@ -1,4 +1,5 @@
 use crate::camera::components::FocusTarget;
+use crate::camera::WINDOW_DEFAULT_SIZE;
 use crate::free_hand_controller::resources::Grabbing;
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
@@ -26,8 +27,8 @@ pub fn spawn_camera(mut commands: Commands) {
                 far: 1000.,
                 near: -1000.,
                 scaling_mode: ScalingMode::AutoMin {
-                    min_width: 640.,
-                    min_height: 340.,
+                    min_width: WINDOW_DEFAULT_SIZE.x,
+                    min_height: WINDOW_DEFAULT_SIZE.y,
                 },
                 scale: NORMAL_CAMERA_SCALE,
                 ..default()

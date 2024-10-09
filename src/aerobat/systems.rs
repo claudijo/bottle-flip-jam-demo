@@ -1,4 +1,6 @@
-use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting, RestingTime};
+use crate::aerobat::components::{
+    Aerobat, FlipMeter, Grounded, PassFromBelow, Resting, RestingTime,
+};
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
 use crate::aerobat::{INCREASED_GRAVITY, NORMAL_GRAVITY};
 use crate::bottle::components::{Bottle, BottleContent, BottlePart};
@@ -126,5 +128,33 @@ pub fn track_flip_rotation(
     for (mut flip_meter, angular_velocity) in &mut aerobat_query {
         let rotation_step = angular_velocity.0 * time.delta_seconds();
         flip_meter.0 += rotation_step;
+    }
+}
+
+pub fn filter_collisions_for_grabbed_bottle(
+    mut collisions: ResMut<Collisions>,
+    query: Query<(), With<BottlePart>>,
+    grabbing: Res<Grabbing>,
+) {
+    if grabbing.0 {
+        collisions.retain(|contacts| {
+            !query.contains(contacts.entity1) && !query.contains(contacts.entity2)
+        });
+    }
+}
+
+pub fn filter_collision_for_pass_from_below_colliders(
+    aerobat_query: Query<&LinearVelocity, With<Aerobat>>,
+    platform_query: Query<(), With<PassFromBelow>>,
+    mut collisions: ResMut<Collisions>,
+) {
+    for linear_velocity in &aerobat_query {
+        if linear_velocity.y < 0. {
+            continue;
+        }
+
+        collisions.retain(|contacts| {
+            !platform_query.contains(contacts.entity1) && !platform_query.contains(contacts.entity2)
+        })
     }
 }

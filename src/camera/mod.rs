@@ -7,6 +7,9 @@ pub mod components;
 pub mod systems;
 pub mod utils;
 
+pub const WINDOW_DEFAULT_SIZE: Vec2 = Vec2 { x: 640., y: 360. };
+// pub const WINDOW_DEFAULT_SIZE: Vec2 = Vec2 { x: 1280., y: 720. };
+
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
