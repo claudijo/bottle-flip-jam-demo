@@ -1,18 +1,35 @@
 use crate::physics::CustomCollisionLayer;
 use crate::platforms::components::{FanAnimationTimer, GamePlatform};
 use crate::platforms::PlatformTemplate;
-use crate::progression::components::RoundTargetPlatform;
+use crate::progression::components::{TargetPlatform, SpawnPlatform, PermanentPlatform};
 use avian2d::prelude::*;
 use bevy::prelude::*;
 use std::time::Duration;
 
-pub fn remove_round_target_platform_marker(
+pub fn clear_target_platform(
     mut commands: Commands,
-    platform_query: Query<Entity, With<RoundTargetPlatform>>,
+    prev_target_platform_query: Query<Entity, With<TargetPlatform>>,
+    prev_spawn_platform_query: Query<Entity, With<SpawnPlatform>>,
+
 ) {
-    for entity in &platform_query {
-        commands.entity(entity).remove::<RoundTargetPlatform>();
+    for entity in &prev_spawn_platform_query {
+        commands.entity(entity).remove::<SpawnPlatform>();
     }
+
+    for entity in &prev_target_platform_query {
+        commands.entity(entity).remove::<TargetPlatform>();
+        commands.entity(entity).insert(SpawnPlatform);
+    }
+}
+
+pub fn disable_colliders_for_cleared_platforms(
+    mut platform_query: Query<&mut CollisionLayers, (With<GamePlatform>, Without<TargetPlatform>, Without<SpawnPlatform>, Without<PermanentPlatform>)>,
+) {
+    for mut collision_layers in &mut platform_query {
+        collision_layers.memberships = LayerMask::NONE;
+        collision_layers.filters = LayerMask::NONE;
+    }
+
 }
 
 pub fn spawn_ground_collider(mut commands: Commands) {
@@ -24,6 +41,7 @@ pub fn spawn_ground_collider(mut commands: Commands) {
             CustomCollisionLayer::Platform,
             [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
         ),
+        PermanentPlatform,
         GamePlatform,
         Name::new("Ground collider"),
     ));
@@ -49,7 +67,7 @@ pub fn spawn_fan(
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
             GamePlatform,
-            RoundTargetPlatform,
+            TargetPlatform,
         ))
         .with_children(|parent| {
             parent.spawn((
@@ -92,7 +110,7 @@ fn spawn_platform(
                 [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
             ),
             GamePlatform,
-            RoundTargetPlatform,
+            TargetPlatform,
         ))
         .with_children(|parent| {
             parent.spawn(SpriteBundle {

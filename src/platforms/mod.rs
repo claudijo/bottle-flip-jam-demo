@@ -1,10 +1,4 @@
-use crate::platforms::systems::{
-    animate_fan, despawn_game_platforms, remove_round_target_platform_marker, spawn_awning_1,
-    spawn_awning_2, spawn_bench, spawn_cardboard_boxes, spawn_fan, spawn_ground_collider,
-    spawn_horizontal_neon_sign, spawn_ledge_1, spawn_skateboard, spawn_thin_ledge,
-    spawn_top_awning, spawn_top_ledge, spawn_vent_1, spawn_vent_2, spawn_vent_3,
-    spawn_vertical_neon_sign, spawn_wall_tiles_1, spawn_wall_tiles_2, spawn_wall_tiles_3,
-};
+use crate::platforms::systems::{animate_fan, despawn_game_platforms, clear_target_platform, spawn_awning_1, spawn_awning_2, spawn_bench, spawn_cardboard_boxes, spawn_fan, spawn_ground_collider, spawn_horizontal_neon_sign, spawn_ledge_1, spawn_skateboard, spawn_thin_ledge, spawn_top_awning, spawn_top_ledge, spawn_vent_1, spawn_vent_2, spawn_vent_3, spawn_vertical_neon_sign, spawn_wall_tiles_1, spawn_wall_tiles_2, spawn_wall_tiles_3, disable_colliders_for_cleared_platforms};
 
 use crate::progression::states::{GameState, LevelState, RoundState};
 use bevy::prelude::*;
@@ -122,7 +116,7 @@ impl Plugin for PlatformsPlugin {
 
         app.add_systems(
             OnEnter(RoundState::Finished),
-            remove_round_target_platform_marker.run_if(in_state(GameState::InGame)),
+            (clear_target_platform, disable_colliders_for_cleared_platforms).chain().run_if(in_state(GameState::InGame)),
         );
 
         app.add_systems(Update, animate_fan.run_if(in_state(GameState::InGame)));

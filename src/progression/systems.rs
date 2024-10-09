@@ -1,6 +1,6 @@
 use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting};
 use crate::aerobat::{count_landing_revolutions, evaluate_landing_type, LandingType};
-use crate::progression::components::RoundTargetPlatform;
+use crate::progression::components::TargetPlatform;
 use crate::progression::resources::RoundId;
 use crate::progression::states::{GameState, LevelState, RoundState};
 use crate::score::events::BonusEvent;
@@ -8,7 +8,7 @@ use crate::score::{CAP_FLIP_LAND_BONUS, FLIP_LAND_BONUS};
 use bevy::prelude::*;
 
 pub fn end_round(
-    round_target_platform_query: Query<Entity, With<RoundTargetPlatform>>,
+    round_target_platform_query: Query<Entity, With<TargetPlatform>>,
     mut next_round_state: ResMut<NextState<RoundState>>,
     aerobat_query: Query<(&Grounded, &FlipMeter, &Transform), (With<Aerobat>, Added<Resting>)>,
     mut bonus_event_writer: EventWriter<BonusEvent>,
