@@ -1,17 +1,14 @@
 use crate::aerobat::components::{Aerobat, FlipMeter, Grounded, Resting, RestingTime};
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
+use crate::aerobat::{INCREASED_GRAVITY, NORMAL_GRAVITY};
 use crate::bottle::components::{Bottle, BottleContent, BottlePart};
 use crate::bottle::{BOTTLE_BODY_SIZE, BOTTLE_CAP_SIZE, BOTTLE_NECK_HEIGHT};
 use crate::free_hand_controller::events::Released;
+use crate::free_hand_controller::resources::Grabbing;
 use avian2d::prelude::*;
 use bevy::prelude::*;
-use crate::aerobat::{INCREASED_GRAVITY, NORMAL_GRAVITY};
-use crate::free_hand_controller::resources::Grabbing;
 
-pub fn adjust_gravity(
-    grabbing: Res<Grabbing>,
-    mut gravity: ResMut<Gravity>
-) {
+pub fn adjust_gravity(grabbing: Res<Grabbing>, mut gravity: ResMut<Gravity>) {
     if grabbing.is_changed() {
         if grabbing.0 {
             gravity.0 = Vec2::NEG_Y * INCREASED_GRAVITY;

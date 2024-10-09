@@ -20,7 +20,6 @@ pub fn spawn_camera(mut commands: Commands) {
 
             // For bloom, using a tonemapper that desaturates to white is recommended
             // tonemapping: Tonemapping::TonyMcMapface,
-
             transform: Transform::from_xyz(0., 0., 0.),
 
             projection: OrthographicProjection {

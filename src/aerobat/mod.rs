@@ -1,6 +1,9 @@
-use avian2d::prelude::Gravity;
 use crate::aerobat::resources::{RestingActivationTime, RestingThreshold};
-use crate::aerobat::systems::{add_hit_detector, adjust_gravity, insert_flip_meter_on_release, track_flip_rotation, update_grounded, update_resting, update_resting_time};
+use crate::aerobat::systems::{
+    add_hit_detector, adjust_gravity, insert_flip_meter_on_release, track_flip_rotation,
+    update_grounded, update_resting, update_resting_time,
+};
+use avian2d::prelude::Gravity;
 
 use crate::bottle::systems::spawn_bottle_content;
 use crate::progression::states::{GameState, RoundState};
