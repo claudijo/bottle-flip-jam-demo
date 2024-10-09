@@ -25,7 +25,6 @@ pub fn spawn_ground_collider(mut commands: Commands) {
             [CustomCollisionLayer::Bottle, CustomCollisionLayer::Platform],
         ),
         GamePlatform,
-        RoundTargetPlatform,
         Name::new("Ground collider"),
     ));
 }
